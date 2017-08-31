@@ -49,4 +49,6 @@ public interface IControlView extends UiView {
 
     void setInputVisiable(boolean visiable);
 
+    void setRefuseVisable(boolean visable);
+
 }

@@ -400,6 +400,11 @@ public class ControlView extends ControlBaseActivity<ControlPresenter> implement
         mEdit.setVisibility(visiable ? View.VISIBLE : View.GONE);
     }
 
+    @Override
+    public void setRefuseVisable(boolean visable) {
+
+        mReleaseLayout.setVisibility(visable ? View.GONE : View.VISIBLE);//结束(呼出)
+    }
     /**
      * 隐藏键盘
      */

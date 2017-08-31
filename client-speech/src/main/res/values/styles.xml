@@ -27,4 +27,9 @@
         <item name="colorControlActivated">#E5E5E5</item>
     </style>
 
+    <style name="controllTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <!--<item name="android:windowContentOverlay">@null</item>-->
+    </style>
 </resources>

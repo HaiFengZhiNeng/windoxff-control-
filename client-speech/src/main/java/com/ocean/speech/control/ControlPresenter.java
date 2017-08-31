@@ -504,8 +504,10 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
         mCallId = ((Activity) mView).getIntent().getStringExtra(ECDevice.CALLID);
         if (!TextUtils.isEmpty(mCallId)) {
             ECDevice.getECVoIPCallManager().releaseCall(mCallId);
-            exit();
+//            exit();
         }
+        mView.setGlViewVisable(false);
+        mView.setRefuseVisable(true);
         mView.setChronometerVisible(true);
     }
 
@@ -557,7 +559,9 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
         if (!TextUtils.isEmpty(mCurrentCallId)) {
             ECDevice.getECVoIPCallManager().rejectCall(mCurrentCallId, 6666);
         }
-        exit();
+        mView.setGlViewVisable(false);
+        mView.setRefuseVisable(true);
+//        exit();
     }
 
     /**

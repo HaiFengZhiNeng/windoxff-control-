@@ -102,6 +102,7 @@
             android:excludeFromRecents="true"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
+            android:theme="@style/controllTheme"
             android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name=".login.LoginView"
