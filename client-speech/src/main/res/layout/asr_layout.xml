@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/asr_result_layout"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg"
+    android:layout_alignParentRight="true"
+    android:layout_above="@+id/edit_layout"
+    android:visibility="gone"
+    android:layout_marginRight="30dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/asr_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Q:" />
+
+    <TextView
+        android:id="@+id/asr_answer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A:" />
+
+    <Button
+        android:id="@+id/asr_send"
+        android:layout_width="75dp"
+        android:layout_height="40dp"
+        android:background="@drawable/send_btn_bg"
+        android:layout_gravity="right"
+        android:text="发送" />
+
+</LinearLayout>

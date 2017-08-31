@@ -1,0 +1,73 @@
+<resources>
+    <string name="app_name">远程遥控</string>
+    <string-array name="voicer_cloud_entries">
+        <item>小燕—女青、中英、普通话</item>
+        <item>小宇—男青、中英、普通话</item>
+        <item>凯瑟琳—女青、英</item>
+        <item>亨利—男青、英</item>
+        <item>玛丽—女青、英</item>
+        <item>小研—女青、中英、普通话</item>
+        <item>小琪—女青、中英、普通话</item>
+        <item>小峰—男青、中英、普通话</item>
+        <item>小梅—女青、中英、粤语</item>
+        <item>小莉—女青、中英、台湾普通话</item>
+        <item>小蓉—女青、中、四川话</item>
+        <item>小芸—女青、中、东北话</item>
+        <item>小坤—男青、中、河南话</item>
+        <item>小强—男青、中、湖南话</item>
+        <item>小莹—女青、中、陕西话</item>
+        <item>小新—男童、中、普通话</item>
+        <item>楠楠—女童、中、普通话</item>
+        <item>老孙—男老、中、普通话</item>
+    </string-array>
+    <string-array name="voicer_cloud_values">
+        <item>xiaoyan</item>
+        <item>xiaoyu</item>
+        <item>catherine</item>
+        <item>henry</item>
+        <item>vimary</item>
+        <item>vixy</item>
+        <item>xiaoqi</item>
+        <item>vixf</item>
+        <item>xiaomei</item>
+        <item>xiaolin</item>
+        <item>xiaorong</item>
+        <item>xiaoqian</item>
+        <item>xiaokun</item>
+        <item>xiaoqiang</item>
+        <item>vixying</item>
+        <item>xiaoxin</item>
+        <item>nannan</item>
+        <item>vils</item>
+    </string-array>
+
+    <string name="auto_action">自由运动(开)</string>
+    <string name="interface_control">界面控制</string>
+    <string name="speech">开启语音(开)</string>
+    <string name="video_cancel_text">结束视频通话</string>
+    <string name="video_accept_text">开始视频聊天</string>
+
+    <string name="ec_voip_calling_refuse">对方拒绝您的呼叫请求</string>
+    <string name="ec_voip_calling_busy">对方正忙，请稍后再拨</string>
+    <string name="ec_voip_call_fail_no_cash">呼叫失败，请查询余额</string>
+    <string name="ec_voip_is_talking_tip">正在通话中, 轻击以继续</string>
+    <string name="ec_app_err_disconnect_server_tip">无法连接服务器，请稍后再试</string>
+    <string name="ec_voip_call_fail_connection_failed_auth">第三方鉴权地址连接失败</string>
+    <string name="ec_voip_call_fail_no_pay_account">第三方主账号余额不足</string>
+    <string name="ec_voip_call_auth_failed">第三方鉴权失败，子账号余额不足</string>
+    <string name="ec_voip_calling_notfound">对方不在线，请稍后重试</string>
+    <string name="ec_meeting_not_exist">会议号已解散或不存在</string>
+    <string name="ec_meeting_pass_error">会议号密码验证失败</string>
+    <string name="ec_call_number_error">呼叫的号码错误</string>
+    <string name="ec_voip_calling_finish">通话结束</string>
+    <string name="ec_no_support_voip">呼叫失败或者对方不在线！</string>
+    <string name="ec_voip_calling_wait">等待对方接听&#8230;</string>
+    <string name="ec_voip_calling_accepting">正在接听...</string>
+    <string name="ec_voip_calling_timeout">呼叫超时，请稍后再拨</string>
+    <string name="ec_voip_calling_no_answer">无人应答，请稍后再拨</string>
+    <string name="ec_voip_call_error">媒体协商失败</string>
+    <string name="ec_voip_call_fail_not_find_appid">第三方应用ID未找到</string>
+    <string name="ec_voip_call_fail_not_online_only_call">第三方未上线应用仅限呼叫已配置测试号码</string>
+    <string name="ec_voip_call_fail">呼叫失败，请稍后重试&#8230;</string>
+
+</resources>

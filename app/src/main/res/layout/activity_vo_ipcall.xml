@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:call="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_calling"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text=""
+            android:textSize="20sp" />
+
+        <Chronometer
+            android:id="@+id/chronometer"
+            android:layout_width="match_parent"
+            android:layout_height="40.0dip"
+            android:gravity="center"
+            android:text=""
+            android:textColor="#000"
+            android:textSize="15.0sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/calling_bottom_release"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="15dip"
+        android:paddingLeft="20dip"
+        android:paddingRight="20dip"
+        android:paddingTop="10dip"
+        android:visibility="visible">
+
+
+        <ImageButton
+            android:id="@+id/layout_call_release"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:background="@color/color_over"
+            android:paddingLeft="20dip"
+            android:paddingRight="20dip"
+            android:src="@mipmap/ec_call_interface_hang_up" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_call_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="15dp"
+        android:visibility="gone"
+        android:background="@color/colorPrimary">
+
+            <ImageButton
+                android:id="@+id/layout_call_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
+                android:paddingLeft="20dip"
+                android:paddingRight="20dip"
+                android:src="@mipmap/ec_call_interface_refuse" />
+
+            <ImageButton
+                android:id="@+id/layout_call_accept"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dip"
+                android:background="@color/color_accept"
+                android:paddingLeft="20dip"
+                android:paddingRight="20dip"
+                android:src="@mipmap/ec_call_interface_answer" />
+
+    </LinearLayout>
+
+</RelativeLayout>

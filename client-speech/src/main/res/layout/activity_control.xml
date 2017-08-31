@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/callRoot_fm"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/ic_contro_bg">
+
+    <FrameLayout
+        android:id="@+id/glView_frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+
+        <com.yuntongxun.ecsdk.voip.video.ECOpenGlView
+            android:id="@+id/remote_video_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.yuntongxun.ecsdk.voip.video.ECOpenGlView
+            android:id="@+id/local_video_view"
+            android:layout_width="100dp"
+            android:layout_height="140dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="6dp"
+            android:layout_marginLeft="6dp"
+            android:padding="2dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_tip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/nav_relative"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+        <com.ocean.speech.control.NavController
+            android:id="@+id/nav_control"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="100dp"
+            android:layout_marginTop="40dp"
+            android:visibility="visible" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/voice_animation_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <com.ocean.speech.custom.AnimationView
+            android:id="@+id/voice_animation"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="150dp"
+            android:layout_marginRight="150dp" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#222676c6">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/link_imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@mipmap/ic_control_link_no" />
+
+            <ImageView
+                android:id="@+id/relink_imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:src="@mipmap/ic_refresh_link"
+                android:text="重新连接" />
+
+            <ImageView
+                android:id="@+id/openSurface_imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:src="@mipmap/ic_camera"
+                android:text="开启视频通话" />
+
+            <ImageView
+                android:id="@+id/localView_imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:src="@mipmap/ic_takephoto" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/connect_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="正在连接..." />
+
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true">
+
+            <RelativeLayout
+                android:id="@+id/control_relative"
+                android:layout_width="90dp"
+                android:layout_height="250dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:background="@mipmap/ic_coutsor_right">
+
+                <ImageView
+                    android:id="@+id/sport_imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dip"
+                    android:layout_marginTop="30dp"
+                    android:background="@mipmap/ic_control_sport" />
+
+                <ImageView
+                    android:id="@+id/voice_imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/sport_imageView"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@mipmap/ic_control_voice" />
+
+                <ImageView
+                    android:id="@+id/setting_imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/voice_imageView"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@mipmap/ic_control_setting" />
+
+                <ImageView
+                    android:id="@+id/like_imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/setting_imageView"
+                    android:layout_marginBottom="8dip"
+                    android:layout_marginLeft="45dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@mipmap/ic_control_like" />
+
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/controlSetting_imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="-20dp"
+                android:background="@mipmap/ic_setting" />
+        </RelativeLayout>
+
+
+        <include layout="@layout/asr_layout" />
+
+        <RelativeLayout
+            android:id="@+id/btn_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="50dp">
+
+            <LinearLayout
+                android:id="@+id/ll_release"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <Chronometer
+                    android:id="@+id/chronometer"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/send_btn_bg"
+                    android:gravity="center"
+                    android:text="1111"
+                    android:textColor="#fff"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/video_btn_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/send_btn_bg"
+                    android:text="结束"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_begin"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/video_btn_accept"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/send_btn_bg"
+                    android:text="接收视频聊天"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/video_btn_relese"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/send_btn_bg"
+                    android:text="拒绝"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/edit_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30dp"
+            android:background="@mipmap/ic_input_all"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="3dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/change_text_voice"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/ic_input_voice" />
+
+            <Button
+                android:id="@+id/voice_btn"
+                android:layout_width="320dp"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/change_text_voice"
+                android:text="点击开始"
+                android:visibility="invisible" />
+
+            <LinearLayout
+                android:id="@+id/edit_text_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/change_text_voice"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/edit_text"
+                    android:layout_width="240dp"
+                    android:layout_height="50dp" />
+
+                <TextView
+                    android:id="@+id/send_text"
+                    android:layout_width="80dp"
+                    android:layout_height="45dp"
+                    android:gravity="center"
+                    android:text="发送"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/hideInput_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="3dp"
+                    android:src="@mipmap/ic_left" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/message_relative"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:background="@mipmap/ic_input_none">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/ic_control_message" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</FrameLayout>

@@ -1,0 +1,57 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        release {
+            keyAlias 'haifengrobot'
+            keyPassword 'haifengrobot'
+            storeFile file('haifengrobot.jks')
+            storePassword 'haifengrobot'
+        }
+        debug {
+            keyAlias 'haifengrobot'
+            keyPassword 'haifengrobot'
+            storeFile file('haifengrobot.jks')
+            storePassword 'haifengrobot'
+        }
+    }
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "com.haifeng.robot"
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+//        multiDexEnabled true
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+//            java.srcDirs = ['src/main/java']
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile project(':mvp-library')
+    compile files('libs/YTX_Android_Full_SDK_v5.3.2r.jar')
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'junit:junit:4.12'
+}

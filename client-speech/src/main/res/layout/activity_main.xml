@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ocean.speech.main.MainActivity">
+
+
+    <TextView
+        android:id="@+id/grammar_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="语法构建中..." />
+
+
+    <TextView
+        android:id="@+id/result_q"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/grammar_result" />
+
+    <TextView
+        android:id="@+id/result_a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/result_q" />
+
+
+    <Button
+        android:id="@+id/asr_grammar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="构建语法"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/start_asr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:text="开始识别" />
+
+    <Button
+        android:id="@+id/stop_asr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/asr_grammar"
+        android:text="停止识别"
+        android:visibility="gone" />
+
+</RelativeLayout>

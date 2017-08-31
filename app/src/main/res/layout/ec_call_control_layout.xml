@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/call_control_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/layout_call_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingBottom="15dip"
+        android:paddingTop="15dip">
+
+        <LinearLayout
+            android:id="@+id/incoming_call_bottom_show"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:gravity="center_horizontal">
+
+            <ImageButton
+                android:id="@+id/layout_call_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dip"
+                android:paddingRight="20dip"
+                android:src="@mipmap/ec_call_interface_refuse" />
+
+            <ImageButton
+                android:id="@+id/layout_call_accept"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dip"
+                android:paddingLeft="20dip"
+                android:paddingRight="20dip"
+                android:src="@mipmap/ec_call_interface_answer" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/calling_bottom_show"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="15dip"
+            android:paddingLeft="20dip"
+            android:paddingRight="20dip"
+            android:paddingTop="10dip"
+            android:visibility="visible">
+
+
+            <ImageButton
+                android:id="@+id/layout_call_release"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip"
+                android:paddingLeft="20dip"
+                android:paddingRight="20dip"
+                android:src="@mipmap/ec_call_interface_hang_up" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

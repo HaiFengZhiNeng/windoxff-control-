@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Created by 岱青海蓝信息系统(北京)有限公司 on 17-2-10 上午9:41
+  ~ Copyright (c) 2017. All rights reserved.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@color/colorAccent"
+    android:paddingLeft="10dp">
+
+    <ImageView
+        android:id="@+id/iv_top_back"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingLeft="10dp"
+        android:paddingRight="20dp"
+        android:src="@mipmap/ic_top_back" />
+
+    <TextView
+        android:id="@+id/tv_top_center"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+</RelativeLayout>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.haifeng.robot.MainActivity">
+
+    <Button
+        android:id="@+id/entrance_voice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="语音通话"
+        android:textColor="@android:color/white"
+        android:textSize="18.0dip" />
+
+    <Button
+        android:id="@+id/entrance_video"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="视频聊天"
+        android:textColor="@android:color/white"
+        android:textSize="18.0dip"
+        tools:layout_editor_absoluteX="21dp"
+        tools:layout_editor_absoluteY="62dp" />
+
+    <Button
+        android:id="@+id/entrance_chat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="IM Chat"
+        android:textColor="@android:color/white"
+        android:textSize="18.0dip"
+        tools:layout_editor_absoluteX="21dp"
+        tools:layout_editor_absoluteY="62dp" />
+
+</LinearLayout>

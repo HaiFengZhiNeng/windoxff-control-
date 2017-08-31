@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#CFD7DC</color>
+
+    <color name="list_line">#44ffffff</color>
+
+    <color name="color_0Ec7dd">#0Ec7dd</color>
+    <color name="color_accept">#108308</color>
+    <color name="color_select_video">#333333</color>
+    <color name="color_select_voice">#037ad0</color>
+    <color name="color_login_stroke">#CDCFD4</color>
+    <color name="color_login_bg">#ECEEF3</color>
+    <color name="color_control_cursor">#01405f</color>
+</resources>
