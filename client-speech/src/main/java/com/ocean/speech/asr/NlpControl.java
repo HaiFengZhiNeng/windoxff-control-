@@ -26,6 +26,8 @@ import java.util.HashMap;
 public class NlpControl {
     private static final String TAG = "Npl++";
 
+
+
     private AIUIAgent mAIUIAgent = null;
     private int mAIUIState = AIUIConstant.STATE_IDLE;
 
