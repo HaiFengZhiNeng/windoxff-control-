@@ -129,8 +129,8 @@
 
             <RelativeLayout
                 android:id="@+id/control_relative"
-                android:layout_width="90dp"
-                android:layout_height="250dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
@@ -140,8 +140,8 @@
                     android:id="@+id/sport_imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dip"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="43dip"
+                    android:layout_marginTop="25dp"
                     android:background="@mipmap/ic_control_sport" />
 
                 <ImageView
@@ -149,8 +149,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/sport_imageView"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="17dp"
+                    android:layout_marginTop="10dp"
                     android:background="@mipmap/ic_control_voice" />
 
                 <ImageView
@@ -158,8 +158,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/voice_imageView"
-                    android:layout_marginLeft="18dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
                     android:background="@mipmap/ic_control_setting" />
 
                 <ImageView
@@ -168,9 +168,17 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/setting_imageView"
                     android:layout_marginBottom="8dip"
-                    android:layout_marginLeft="45dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="17dp"
+                    android:layout_marginTop="10dp"
                     android:background="@mipmap/ic_control_like" />
+
+                <ImageView
+                    android:id="@+id/repeat_imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/like_imageView"
+                    android:layout_marginLeft="43dp"
+                    android:background="@mipmap/ic_repeat" />
 
 
             </RelativeLayout>
@@ -181,8 +189,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginBottom="10dp"
-                android:layout_marginRight="-20dp"
+                android:layout_marginRight="-33dp"
                 android:background="@mipmap/ic_setting" />
         </RelativeLayout>
 

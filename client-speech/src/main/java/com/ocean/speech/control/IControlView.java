@@ -51,4 +51,6 @@ public interface IControlView extends UiView {
 
     void setRefuseVisable(boolean visable);
 
+    void setRepeatShow(boolean isShow);
+
 }

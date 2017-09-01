@@ -48,11 +48,11 @@ public class ControlView extends ControlBaseActivity<ControlPresenter> implement
         return R.layout.activity_control;
     }
 
-    private Button  mCancelVideo, mAcceptVideo, mReleaseVideo;
+    private Button mCancelVideo, mAcceptVideo, mReleaseVideo;
     private EditText mEditText;
 
     private TextView mConnetState, mSendEdit;
-    private ImageView mChangeTxtOrVoice, mControlSetting, mSport, mVoice, mSetting, mLike, mLink, mRrelink, mOpenSurface, mLocalView, mHideInput;
+    private ImageView mChangeTxtOrVoice, mControlSetting, mSport, mVoice, mSetting, mLike, mLink, mRrelink, mOpenSurface, mLocalView, mHideInput, mRepeat;
     private Button mAsrBtn, mAsrSendBtn;
     private LinearLayout mEditLayout, mAsrResultLayout, mReleaseLayout, mAcceptLayout;
     private RelativeLayout mControlRelative, mMessage, mEdit;
@@ -135,6 +135,7 @@ public class ControlView extends ControlBaseActivity<ControlPresenter> implement
         (mMessage) = (RelativeLayout) findViewById(R.id.message_relative);
         (mEdit) = (RelativeLayout) findViewById(R.id.edit_layout);
         (mHideInput) = (ImageView) findViewById(R.id.hideInput_iv);
+        (mRepeat) = (ImageView) findViewById(R.id.repeat_imageView);
 
         mPresenter.attachGlView(mLocalVideoView, mRemoteVideoView);
         hideSoftInput();
@@ -167,6 +168,7 @@ public class ControlView extends ControlBaseActivity<ControlPresenter> implement
         mSetting.setOnClickListener(this);
         mMessage.setOnClickListener(this);
         mHideInput.setOnClickListener(this);
+        mRepeat.setOnClickListener(this);
         mCaptureView.setOnCameraInitListener(new OnCameraInitListener() {
             @Override
             public void onCameraInit(boolean result) {
@@ -211,15 +213,19 @@ public class ControlView extends ControlBaseActivity<ControlPresenter> implement
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            //自由运动
             case R.id.sport_imageView:
                 mPresenter.sendAutoAction();
                 break;
+            //
             case R.id.setting_imageView:
                 mPresenter.showInterfaceDialog();
                 break;
+            //语音开关
             case R.id.voice_imageView:
                 mPresenter.sendSpeech();
                 break;
+            //
             case R.id.like_imageView:
                 mPresenter.showSceneDialog();
                 break;
@@ -229,6 +235,10 @@ public class ControlView extends ControlBaseActivity<ControlPresenter> implement
                 break;
             case R.id.change_text_voice:
                 mPresenter.changeSpeech();
+                break;
+            //复读
+            case R.id.repeat_imageView:
+                mPresenter.doRepear();
                 break;
             case R.id.asr_send:
                 mPresenter.sendAsrResult();
@@ -405,6 +415,16 @@ public class ControlView extends ControlBaseActivity<ControlPresenter> implement
 
         mReleaseLayout.setVisibility(visable ? View.GONE : View.VISIBLE);//结束(呼出)
     }
+
+    @Override
+    public void setRepeatShow(boolean isShow) {
+        if (isShow) {
+            mRepeat.setImageResource(R.mipmap.ic_repeat_pressed);
+        } else {
+            mRepeat.setImageResource(R.mipmap.ic_repeat);
+        }
+    }
+
     /**
      * 隐藏键盘
      */

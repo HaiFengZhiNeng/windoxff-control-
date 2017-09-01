@@ -1,6 +1,7 @@
 package com.ocean.speech.control;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -109,6 +110,9 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
     private boolean isAreLevelShowing = true;
 
     private boolean isShowInput = true;
+
+    //是否复读
+    private boolean isRepeat = false;
 
     // 解析得到语义结果
     String finalText = "";
@@ -318,11 +322,12 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
         @Override
         public void onResult(HashMap<String, Object> result) {
             //将识别到的结果 展示出来，由用户确定是否发送
-//            if (result != null) {
-//                mHandler.sendMessage(mHandler.obtainMessage(5, result));
-//            } else {
-//                mHandler.sendMessage(mHandler.obtainMessage(5, null));
-//            }
+            if (result != null) {
+                mHandler.sendMessage(mHandler.obtainMessage(5, result));
+                isSendMsg = true;
+            } else {
+                mHandler.sendMessage(mHandler.obtainMessage(5, null));
+            }
         }
 
         @Override
@@ -573,10 +578,11 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
             //执行开
             mView.setSportVisiable(true);
             data = "自由运动(关)";
-            controlBytes[3] |= (byte) (1 << 1);
+            controlBytes[3] &= (byte) ~(1 << 1);
         } else {
             //执行关
-            controlBytes[3] &= (byte) ~(1 << 1);
+            controlBytes[3] |= (byte) (1 << 1);
+
             data = "自由运动(开)";
             mView.setSportVisiable(false);
         }
@@ -617,13 +623,16 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
 //        mView.setEditText("");//清空文本框内容
 //    }
 
-    void sendAIUIText(){
+    void sendAIUIText() {
         String text = mView.getEditText();
         if (TextUtils.isEmpty(text))
             return;
         L.i(TAG, "AIUI纯文本信息-->" + text);
-       // sendTextToByte(text);
-        nlpControl.startTextNlp(text);
+        if (isRepeat) {
+            nlpControl.startTextNlp(text);
+        } else {
+            sendTextToByte(text);
+        }
         isSendMsg = true;
         mView.setEditText("");//清空文本框内容
     }
@@ -652,12 +661,12 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
      */
     void showControl(RelativeLayout relate_level) {
         if (!isAreLevelShowing) {
-            MyAnimation.startAnimationsIn(relate_level, 500);
+            MyAnimation.startAnimationsIn(relate_level, 800, getContext());
         } else {
             if (isAreLevelShowing) {
-                MyAnimation.startAnimationsOut(relate_level, 500, 500);
+                MyAnimation.startAnimationsOut(relate_level, 800, 500, getContext());
             } else {
-                MyAnimation.startAnimationsOut(relate_level, 500, 0);
+                MyAnimation.startAnimationsOut(relate_level, 800, 0, getContext());
             }
         }
         isAreLevelShowing = !isAreLevelShowing;
@@ -728,15 +737,20 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
         }
     }
 
+    /**
+     * 发送语音
+     */
     void startAsr() {
         mView.setAsrLayoutVisible(false);
         mView.setAnimationVisible(true);
-//        if (mAsr != null)
-//            mAsr.startAsr();
-        if (nlpControl != null){
-            nlpControl.startVoiceNlp();
+        if (isRepeat) {
+            if (nlpControl != null) {
+                nlpControl.startVoiceNlp();
+            }
+        } else {
+            if (mAsr != null)
+                mAsr.startAsr();
         }
-
     }
 
     void localViewVisible() {
@@ -774,6 +788,18 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
             isSendMsg = true;
             mView.setAsrLayoutVisible(false);
         }
+    }
+
+    /**
+     * 复读
+     */
+    void doRepear() {
+        if (!isRepeat) {
+            mView.setRepeatShow(true);
+        } else {
+            mView.setRepeatShow(false);
+        }
+        isRepeat = !isRepeat;
     }
 
     /**
@@ -936,8 +962,8 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
         public void onEvent(AIUIEvent event) {
             switch (event.eventType) {
                 case AIUIConstant.EVENT_WAKEUP:
-                    Log.i( TAG,  "on event: "+ event.eventType );
-                    showTip( "进入识别状态" );
+                    Log.i(TAG, "on event: " + event.eventType);
+                    showTip("进入识别状态");
                     break;
 
                 case AIUIConstant.EVENT_RESULT: {
@@ -961,7 +987,7 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
                                 JSONObject jsonObject = new JSONObject(resultStr);
 //                                L.i( TAG+"answer==========>", resultStr );
 //                                Log.e(TAG, resultStr);
-                                if(resultStr!=null && resultStr.length() > 3) {
+                                if (resultStr != null && resultStr.length() > 3) {
                                     if (jsonObject.has("answer")) {
                                         //被语音语义识别，返回结果
                                         JSONObject answerObj = jsonObject.getJSONObject("answer");
@@ -995,11 +1021,13 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
 //                        Toast.makeText(getContext(), "已发送", Toast.LENGTH_SHORT).show();
 //                        isSend = false;
 //                    }
-                } break;
+                }
+                break;
 
                 case AIUIConstant.EVENT_ERROR: {
-                    Log.i( TAG,  "on event: "+ event.eventType );
-                } break;
+                    Log.i(TAG, "on event: " + event.eventType);
+                }
+                break;
 
                 case AIUIConstant.EVENT_VAD: {
                     if (AIUIConstant.VAD_BOS == event.arg1) {
@@ -1009,22 +1037,25 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
                     } else {
                         showTip("" + event.arg2);
                     }
-                } break;
+                }
+                break;
 
                 case AIUIConstant.EVENT_START_RECORD: {
-                    Log.i( TAG,  "on event: "+ event.eventType );
+                    Log.i(TAG, "on event: " + event.eventType);
 //                    mView.setAnimationVisible(true);
 //                    mView.getVoiceView().setSignalEMA((int)Math.random()*10+1);
                     showTip("开始录音");
-                } break;
+                }
+                break;
 
                 case AIUIConstant.EVENT_STOP_RECORD: {
-                    Log.i( TAG,  "on event: "+ event.eventType );
+                    Log.i(TAG, "on event: " + event.eventType);
 //                    mView.setAnimationVisible(false);
                     showTip("停止录音");
-                } break;
+                }
+                break;
 
-                case AIUIConstant.EVENT_STATE: {	// 状态事件
+                case AIUIConstant.EVENT_STATE: {    // 状态事件
                     mAIUIState = event.arg1;
 
                     if (AIUIConstant.STATE_IDLE == mAIUIState) {
@@ -1037,13 +1068,15 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
                         // AIUI工作中，可进行交互
                         showTip("STATE_WORKING");
                     }
-                } break;
+                }
+                break;
 
-                case AIUIConstant.EVENT_CMD_RETURN:{
-                    if( AIUIConstant.CMD_UPLOAD_LEXICON == event.arg1 ){
-                        showTip( "上传"+ (0==event.arg2?"成功":"失败") );
+                case AIUIConstant.EVENT_CMD_RETURN: {
+                    if (AIUIConstant.CMD_UPLOAD_LEXICON == event.arg1) {
+                        showTip("上传" + (0 == event.arg2 ? "成功" : "失败"));
                     }
-                }break;
+                }
+                break;
 
                 default:
                     break;
@@ -1052,7 +1085,7 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
 
     };
 
-    private void showTip(String tip){
+    private void showTip(String tip) {
 //        Toast.makeText(application,tip,Toast.LENGTH_SHORT).show();
     }
 }
