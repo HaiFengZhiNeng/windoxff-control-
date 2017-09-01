@@ -1,6 +1,7 @@
 package com.haifeng.robot.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,6 @@ import android.widget.TextView;
 import com.haifeng.robot.R;
 import com.haifeng.robot.bean.ChatMsg;
 import com.haifeng.robot.utils.ViewHolder;
-import com.ocean.mvp.library.utils.L;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +60,7 @@ public class ChatMsgAdapter extends BaseAdapter {
             convertView = mInflater.inflate(R.layout.layout_chat_item, parent, false);
         }
         ChatMsg chatMsg = mChatMsgList.get(position);
-        L.e("key", mChatMsgList.size() + mChatMsgList.get(position).getMsgBody());
+        Log.e("key", mChatMsgList.size() + mChatMsgList.get(position).getMsgBody());
         RelativeLayout rl_mySend = ViewHolder.get(convertView, R.id.rl_mySend);
         LinearLayout ll_otherSend = ViewHolder.get(convertView, R.id.ll_otherSend);
         TextView tv_chatContent = ViewHolder.get(convertView, R.id.tv_chatContentMy);

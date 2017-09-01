@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.haifeng.robot.R;
 import com.haifeng.robot.adapter.ChatMsgAdapter;
 import com.haifeng.robot.bean.ChatMsg;
-import com.ocean.mvp.library.utils.L;
 import com.yuntongxun.ecsdk.ECChatManager;
 import com.yuntongxun.ecsdk.ECDevice;
 import com.yuntongxun.ecsdk.ECError;
@@ -60,7 +59,7 @@ public class ChattingActivity extends BaseVoipActivity implements View.OnClickLi
         ECDevice.setOnChatReceiveListener(new OnChatReceiveListener() {
             @Override
             public void OnReceivedMessage(ECMessage msg) {
-                L.e("key", "==收到新消息");
+                Log.e("key", "==收到新消息");
 //                mHandler.sendEmptyMessage(0);
                 getReceivedMessage(msg);
             }
@@ -173,7 +172,7 @@ public class ChattingActivity extends BaseVoipActivity implements View.OnClickLi
                 return;
             }
             // 将发送的消息更新到本地数据库并刷新UI
-            L.e("key", ecError.toString());
+            Log.e("key", ecError.toString());
             if (ecError.errorCode == 200) {
 
                 et_msg.setText("");
@@ -191,7 +190,7 @@ public class ChattingActivity extends BaseVoipActivity implements View.OnClickLi
         public void onProgress(String s, int i, int i1) {
 
             // 处理文件发送上传进度（尽上传文件、图片时候SDK回调该方法）
-            L.e("key", "[IMChattingHelper - onProgress] msgId：" + s
+            Log.e("key", "[IMChattingHelper - onProgress] msgId：" + s
                     + " ,total：" + i + " ,progress:" + i1);
         }
     };
@@ -206,7 +205,7 @@ public class ChattingActivity extends BaseVoipActivity implements View.OnClickLi
         if (type == ECMessage.Type.TXT) {
             // 在这里处理文本消息
             ECTextMessageBody textMessageBody = (ECTextMessageBody) msg.getBody();
-            L.e("key", "textMessageBody" + textMessageBody);
+            Log.e("key", "textMessageBody" + textMessageBody);
             if (textMessageBody != null) {
                 chatMsg = new ChatMsg();
                 chatMsg.setMsgBody(textMessageBody.getMessage());

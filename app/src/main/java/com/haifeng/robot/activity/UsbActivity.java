@@ -8,10 +8,10 @@ import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.haifeng.robot.R;
-import com.ocean.mvp.library.utils.L;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -69,7 +69,7 @@ public class UsbActivity extends AppCompatActivity {
             tvInfo.append("\ndevice name: " + device.getDeviceName() + "\ndevice product name:"
                     + device.getProductName() + "\nvendor id:" + device.getVendorId() +
                     "\ndevice serial: " + device.getSerialNumber());
-            L.e("key", device.getDeviceName());
+            Log.e("key", device.getDeviceName());
         }
     }
 }

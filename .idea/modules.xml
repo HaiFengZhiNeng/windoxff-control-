@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/HFRobot.iml" filepath="$PROJECT_DIR$/HFRobot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/client-speech/client-speech.iml" filepath="$PROJECT_DIR$/client-speech/client-speech.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mvp_modle/mvp_modle.iml" filepath="$PROJECT_DIR$/mvp_modle/mvp_modle.iml" />
+    </modules>
+  </component>
+</project>

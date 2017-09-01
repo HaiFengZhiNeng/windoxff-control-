@@ -1,1 +1,1 @@
-include ':app', ':mvp-library', 'client-speech'
+include ':app', 'client-speech', 'mvp_modle', ':mvp_modle'

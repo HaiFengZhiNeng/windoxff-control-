@@ -13,7 +13,6 @@ import android.widget.Toast;
 import com.haifeng.robot.MainActivity;
 import com.haifeng.robot.R;
 import com.haifeng.robot.utils.Dlog;
-import com.ocean.mvp.library.utils.L;
 import com.yuntongxun.ecsdk.ECChatManager;
 import com.yuntongxun.ecsdk.ECDevice;
 import com.yuntongxun.ecsdk.ECError;
@@ -147,10 +146,10 @@ public class LoginActivity extends BaseVoipActivity implements View.OnClickListe
                 if (SdkErrorCode.REQUEST_SUCCESS == e.errorCode) {
                     // 个人信息获取成功
                     // 更新个人信息到本地数据库，通知UI刷新
-                    L.e("key", p.toString());
+                    Log.e("key", p.toString());
                     return;
                 }
-                L.e("ECSDK_Demo", "get person info fail  " +
+                Log.e("ECSDK_Demo", "get person info fail  " +
                         ", errorCode=" + e.errorCode);
 
 //                userId='15554955416', version=1, nickName='啊啊啊', sex=MALE, birth='2017-07-29', sign='看看'
@@ -265,7 +264,7 @@ public class LoginActivity extends BaseVoipActivity implements View.OnClickListe
             ECDevice.setOnChatReceiveListener(new OnChatReceiveListener() {
                 @Override
                 public void OnReceivedMessage(ECMessage msg) {
-                    L.e("key", "==收到新消息");
+                    Log.e("key", "==收到新消息");
                 }
 
                 @Override

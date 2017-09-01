@@ -9,7 +9,6 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -17,8 +16,6 @@ import android.widget.Toast;
 import com.iflytek.aiui.AIUIConstant;
 import com.iflytek.aiui.AIUIEvent;
 import com.iflytek.aiui.AIUIListener;
-import com.ocean.mvp.library.net.NetClient;
-import com.ocean.mvp.library.utils.L;
 import com.ocean.speech.SpeechApplication;
 import com.ocean.speech.asr.AsrControl;
 import com.ocean.speech.asr.NlpControl;
@@ -322,12 +319,12 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
         @Override
         public void onResult(HashMap<String, Object> result) {
             //将识别到的结果 展示出来，由用户确定是否发送
-            if (result != null) {
-                mHandler.sendMessage(mHandler.obtainMessage(5, result));
-                isSendMsg = true;
-            } else {
-                mHandler.sendMessage(mHandler.obtainMessage(5, null));
-            }
+//            if (result != null) {
+//                mHandler.sendMessage(mHandler.obtainMessage(5, result));
+//                isSendMsg = true;
+//            } else {
+//                mHandler.sendMessage(mHandler.obtainMessage(5, null));
+//            }
         }
 
         @Override
@@ -743,14 +740,11 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
     void startAsr() {
         mView.setAsrLayoutVisible(false);
         mView.setAnimationVisible(true);
-        if (isRepeat) {
-            if (nlpControl != null) {
-                nlpControl.startVoiceNlp();
-            }
-        } else {
-            if (mAsr != null)
-                mAsr.startAsr();
+        if (nlpControl != null) {
+            nlpControl.startVoiceNlp();
         }
+//            if (mAsr != null)
+//                mAsr.startAsr();
     }
 
     void localViewVisible() {
@@ -985,28 +979,50 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
                                 String resultStr = cntJson.optString("intent");
 //                                Log.i( TAG+"语义理解：", "语义理解"+resultStr );
                                 JSONObject jsonObject = new JSONObject(resultStr);
-//                                L.i( TAG+"answer==========>", resultStr );
+                                L.i(TAG + "answer==========>", resultStr);
 //                                Log.e(TAG, resultStr);
                                 if (resultStr != null && resultStr.length() > 3) {
-                                    if (jsonObject.has("answer")) {
-                                        //被语音语义识别，返回结果
-                                        JSONObject answerObj = jsonObject.getJSONObject("answer");
-                                        finalText = answerObj.optString("text");
-                                        //发送给机器人
+                                    if (isRepeat) {
+                                        if (jsonObject.has("answer")) {
+                                            //被语音语义识别，返回结果
+                                            JSONObject answerObj = jsonObject.getJSONObject("answer");
+                                            finalText = answerObj.optString("text");
+                                            //发送给机器人
 //                                        isSend = true;
-                                        Log.e(TAG, "方法 发送给机器人");
-                                        sendTextToByte(finalText);
-                                        isSendMsg = true;
-                                        Toast.makeText(getContext(), "已发送", Toast.LENGTH_SHORT).show();
-                                    } else if (jsonObject.has("rc") && "4" == jsonObject.getString("rc")) {
-                                        //不能返回结果
-                                        finalText = "我好想没有听懂你说的是什么";
-                                        //发送给机器人
+                                            Log.e(TAG, "方法 发送给机器人");
+                                            sendTextToByte(finalText);
+                                            isSendMsg = true;
+                                            Toast.makeText(getContext(), "已发送", Toast.LENGTH_SHORT).show();
+                                        } else if (jsonObject.has("rc") && "4" == jsonObject.getString("rc")) {
+                                            //不能返回结果
+                                            finalText = "我好想没有听懂你说的是什么";
+                                            //发送给机器人
 //                                        isSend = true;
-                                        sendTextToByte(finalText);
-                                        isSendMsg = true;
-                                        Toast.makeText(getContext(), "已发送", Toast.LENGTH_SHORT).show();
+                                            sendTextToByte(finalText);
+                                            isSendMsg = true;
+                                            Toast.makeText(getContext(), "已发送", Toast.LENGTH_SHORT).show();
+                                        }
+                                    } else {
+                                        if (jsonObject.has("text")) {
+                                            //被语音语义识别，返回结果
+                                            finalText = jsonObject.optString("text");
+                                            //发送给机器人
+//                                        isSend = true;
+                                            Log.e(TAG, "方法 发送给机器人");
+                                            sendTextToByte(finalText);
+                                            isSendMsg = true;
+                                            Toast.makeText(getContext(), "已发送", Toast.LENGTH_SHORT).show();
+                                        } else if (jsonObject.has("rc") && "4" == jsonObject.getString("rc")) {
+                                            //不能返回结果
+                                            finalText = "我好想没有听懂你说的是什么";
+                                            //发送给机器人
+//                                        isSend = true;
+                                            sendTextToByte(finalText);
+                                            isSendMsg = true;
+                                            Toast.makeText(getContext(), "已发送", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
+
                                 }
 //                                L.e( TAG+"answer.text==========>", finalText +"isSend=="+isSend+"");
                             }
