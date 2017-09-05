@@ -1,21 +1,32 @@
 package com.ocean.speech.control;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.animation.TranslateAnimation;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.iflytek.aiui.AIUIConstant;
 import com.iflytek.aiui.AIUIEvent;
 import com.iflytek.aiui.AIUIListener;
+import com.ocean.mvp.library.net.NetClient;
+import com.ocean.mvp.library.utils.L;
+import com.ocean.speech.R;
 import com.ocean.speech.SpeechApplication;
 import com.ocean.speech.asr.AsrControl;
 import com.ocean.speech.asr.NlpControl;
@@ -40,6 +51,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static com.ocean.speech.select.SelectPresenter.RESULT_CODE_STARTAUDIO;
 
 /**
  * Created by zhangyuanyuan on 2017/7/8.
@@ -111,8 +124,18 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
     //是否复读
     private boolean isRepeat = false;
 
+
+    public static final int RESULT_CODE_STARTAUDIO = 100;
+
     // 解析得到语义结果
     String finalText = "";
+
+    //发音人
+    private String[] mCloudVoicersEntries;
+    private String[] mCloudVoicersValue;
+    //默认发音人
+    private String voicer = "xiaoyan";
+
 
     @Override
     public void onCreate(Bundle saveInstanceState) {
@@ -134,10 +157,14 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
         nlpControl.setmAIUIListener(mAIUIListener);
         nlpControl.init();
 
+        // 云端发音人名称列表
+        mCloudVoicersEntries = getContext().getResources().getStringArray(R.array.voicer_cloud_entries);
+        mCloudVoicersValue = getContext().getResources().getStringArray(R.array.voicer_cloud_values);
+
         controlBytes[0] = (byte) 0xAA;
         controlBytes[1] = (byte) 0x01;
-//        controlBytes[3] &= (byte) ~(1);
-        controlBytes[3] &= (byte) 0xfe;
+        controlBytes[3] &= (byte) ~(1);
+//        controlBytes[3] &= (byte) 0xfe;
         controlBytes[6] = (byte) 0xBB;
 
         //获取UDP的ip
@@ -431,6 +458,7 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
                 //获取data数据
                 DataBaseDao dataBaseDao = new DataBaseDao(getContext());
                 ArrayList<InterfaceBean> beans = dataBaseDao.queryAll();
+                Log.e("本地数据库数据", beans.toString());
                 if (beans != null && beans.size() > 0)
                     interfaceDialog.setData(beans);
             }
@@ -594,13 +622,13 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
     void sendSpeech() {
         String data = "";
         if (!isSpeech) {//执行开
-            data = "语音识别(关)";
-            mView.setVoicetVisiable(true);
-            controlBytes[3] &= (byte) 0xfe;
-        } else {//执行关
             data = "语音识别(开)";
             mView.setVoicetVisiable(false);
             controlBytes[3] |= (byte) (1);
+        } else {//执行关
+            data = "语音识别(关)";
+            mView.setVoicetVisiable(true);
+            controlBytes[3] &= (byte) 0xfe;
         }
 //        mView.setSpeechText(data);
         isSpeech = !isSpeech;
@@ -670,6 +698,9 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
     }
 
     private void sendTextToByte(String text) {
+        // 进行字符串的拼接
+        text = voicer + "\0" + text;
+        //  音库参数   \0   发的内容
         Log.e("WCJ", text);
         byte[] textBytes = text.getBytes();
         int length = textBytes.length;
@@ -747,6 +778,24 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
 //                mAsr.startAsr();
     }
 
+    /**
+     * 音频权限
+     */
+    public void audioPermission() {
+        if (PackageManager.PERMISSION_GRANTED == ContextCompat.
+                checkSelfPermission(getContext(), android.Manifest.permission.RECORD_AUDIO)) {
+            startAsr();
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                //提示用户开户权限音频
+                String[] perms = {"android.permission.RECORD_AUDIO"};
+                ActivityCompat.requestPermissions((Activity) mView, perms, RESULT_CODE_STARTAUDIO);
+            }
+        }
+
+    }
+
+    //本地视频显示
     void localViewVisible() {
         if (isVisiable) {
             mView.setLocalViewVisiable(true);
@@ -788,6 +837,7 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
      * 复读
      */
     void doRepear() {
+        finalText = "";
         if (!isRepeat) {
             mView.setRepeatShow(true);
         } else {
@@ -808,6 +858,25 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
         } else {
             showToast("当前未连接机器人");
         }
+    }
+
+    private int selectedNum = 0;
+
+    /**
+     * 选择发音人
+     */
+    void showPersonSelectDialog() {
+        new AlertDialog.Builder(getContext()).setTitle("在线合成发音人选项")
+                .setSingleChoiceItems(mCloudVoicersEntries, // 单选框有几项,各是什么名字
+                        selectedNum, // 默认的选项
+                        new DialogInterface.OnClickListener() { // 点击单选框后的处理
+                            public void onClick(DialogInterface dialog,
+                                                int which) { // 点击了哪一项
+                                voicer = mCloudVoicersValue[which];//发音人 默认是小燕
+                                selectedNum = which;
+                                dialog.dismiss();
+                            }
+                        }).show();
     }
 
     private void resetData() {
@@ -980,6 +1049,7 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
 //                                Log.i( TAG+"语义理解：", "语义理解"+resultStr );
                                 JSONObject jsonObject = new JSONObject(resultStr);
                                 L.i(TAG + "answer==========>", resultStr);
+                                L.e("GG", resultStr.length() + "'");
 //                                Log.e(TAG, resultStr);
                                 if (resultStr != null && resultStr.length() > 3) {
                                     if (isRepeat) {
@@ -1103,5 +1173,23 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
 
     private void showTip(String tip) {
 //        Toast.makeText(application,tip,Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * 权限回调
+     */
+    @Override
+    protected void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case RESULT_CODE_STARTAUDIO:
+                boolean albumAccepted_audio = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                if (!albumAccepted_audio) {
+                    Toast.makeText(getContext(), "请开启应用音频权限", Toast.LENGTH_LONG).show();
+                } else {
+                    startAsr();
+                }
+                break;
+        }
     }
 }

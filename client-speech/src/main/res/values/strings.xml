@@ -2,13 +2,7 @@
     <string name="app_name">远程遥控</string>
     <string-array name="voicer_cloud_entries">
         <item>小燕—女青、中英、普通话</item>
-        <item>小宇—男青、中英、普通话</item>
         <item>凯瑟琳—女青、英</item>
-        <item>亨利—男青、英</item>
-        <item>玛丽—女青、英</item>
-        <item>小研—女青、中英、普通话</item>
-        <item>小琪—女青、中英、普通话</item>
-        <item>小峰—男青、中英、普通话</item>
         <item>小梅—女青、中英、粤语</item>
         <item>小莉—女青、中英、台湾普通话</item>
         <item>小蓉—女青、中、四川话</item>
@@ -16,19 +10,10 @@
         <item>小坤—男青、中、河南话</item>
         <item>小强—男青、中、湖南话</item>
         <item>小莹—女青、中、陕西话</item>
-        <item>小新—男童、中、普通话</item>
-        <item>楠楠—女童、中、普通话</item>
-        <item>老孙—男老、中、普通话</item>
     </string-array>
     <string-array name="voicer_cloud_values">
         <item>xiaoyan</item>
-        <item>xiaoyu</item>
         <item>catherine</item>
-        <item>henry</item>
-        <item>vimary</item>
-        <item>vixy</item>
-        <item>xiaoqi</item>
-        <item>vixf</item>
         <item>xiaomei</item>
         <item>xiaolin</item>
         <item>xiaorong</item>
@@ -36,14 +21,11 @@
         <item>xiaokun</item>
         <item>xiaoqiang</item>
         <item>vixying</item>
-        <item>xiaoxin</item>
-        <item>nannan</item>
-        <item>vils</item>
     </string-array>
 
+    <string name="speech">开启语音(开)</string>
     <string name="auto_action">自由运动(开)</string>
     <string name="interface_control">界面控制</string>
-    <string name="speech">开启语音(开)</string>
     <string name="video_cancel_text">结束视频通话</string>
     <string name="video_accept_text">开始视频聊天</string>
 

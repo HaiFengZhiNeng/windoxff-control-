@@ -52,7 +52,8 @@ public class ControlView extends ControlBaseActivity<ControlPresenter> implement
     private EditText mEditText;
 
     private TextView mConnetState, mSendEdit;
-    private ImageView mChangeTxtOrVoice, mControlSetting, mSport, mVoice, mSetting, mLike, mLink, mRrelink, mOpenSurface, mLocalView, mHideInput, mRepeat;
+    private ImageView mChangeTxtOrVoice, mControlSetting, mSport, mVoice, mSetting, mLike, mLink, mRrelink, mOpenSurface, mLocalView,
+            mHideInput, mRepeat, mVoicePeople;
     private Button mAsrBtn, mAsrSendBtn;
     private LinearLayout mEditLayout, mAsrResultLayout, mReleaseLayout, mAcceptLayout;
     private RelativeLayout mControlRelative, mMessage, mEdit;
@@ -137,7 +138,10 @@ public class ControlView extends ControlBaseActivity<ControlPresenter> implement
         (mHideInput) = (ImageView) findViewById(R.id.hideInput_iv);
         (mRepeat) = (ImageView) findViewById(R.id.repeat_imageView);
 
+        (mVoicePeople) = (ImageView) findViewById(R.id.voicePeople_imageview);
+
         mPresenter.attachGlView(mLocalVideoView, mRemoteVideoView);
+
         hideSoftInput();
 
         mCaptureView = new ECCaptureView(this);
@@ -169,6 +173,7 @@ public class ControlView extends ControlBaseActivity<ControlPresenter> implement
         mMessage.setOnClickListener(this);
         mHideInput.setOnClickListener(this);
         mRepeat.setOnClickListener(this);
+        mVoicePeople.setOnClickListener(this);
         mCaptureView.setOnCameraInitListener(new OnCameraInitListener() {
             @Override
             public void onCameraInit(boolean result) {
@@ -247,7 +252,7 @@ public class ControlView extends ControlBaseActivity<ControlPresenter> implement
                 mPresenter.reLink();
                 break;
             case R.id.voice_btn:
-                mPresenter.startAsr();
+                mPresenter.audioPermission();
                 break;
             case R.id.localView_imageView:
                 mPresenter.localViewVisible();
@@ -274,6 +279,10 @@ public class ControlView extends ControlBaseActivity<ControlPresenter> implement
                 break;
             case R.id.hideInput_iv:
                 mPresenter.showInput(mEdit);
+                break;
+            // 区别语言
+            case R.id.voicePeople_imageview:
+                mPresenter.showPersonSelectDialog();
                 break;
             default:
                 break;

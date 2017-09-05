@@ -151,7 +151,7 @@
                     android:layout_below="@+id/sport_imageView"
                     android:layout_marginLeft="17dp"
                     android:layout_marginTop="10dp"
-                    android:background="@mipmap/ic_control_voice" />
+                    android:background="@mipmap/ic_control_voice_pressed" />
 
                 <ImageView
                     android:id="@+id/setting_imageView"
@@ -270,12 +270,11 @@
             android:layout_height="45dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="30dp"
             android:background="@mipmap/ic_input_all"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="3dp"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/change_text_voice"
@@ -312,6 +311,13 @@
                     android:gravity="center"
                     android:text="发送"
                     android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/voicePeople_imageview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="3dp"
+                    android:src="@mipmap/ic_voice_people" />
 
                 <ImageView
                     android:id="@+id/hideInput_iv"
