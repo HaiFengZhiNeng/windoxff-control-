@@ -311,9 +311,12 @@ public class ControlView extends ControlBaseActivity<ControlPresenter> implement
             mEditLayout.setVisibility(View.VISIBLE);
             mAsrBtn.setVisibility(View.INVISIBLE);
             mAsrResultLayout.setVisibility(View.GONE);
+            mChangeTxtOrVoice.setImageResource(R.mipmap.ic_input_voice);
+
         } else {
             mEditLayout.setVisibility(View.INVISIBLE);
             mAsrBtn.setVisibility(View.VISIBLE);
+            mChangeTxtOrVoice.setImageResource(R.mipmap.ic_input);
         }
     }
 
@@ -397,9 +400,9 @@ public class ControlView extends ControlBaseActivity<ControlPresenter> implement
     @Override
     public void setVoicetVisiable(boolean visiable) {
         if (visiable) {
-            mVoice.setImageResource(R.mipmap.ic_control_voice);
-        } else {
             mVoice.setImageResource(R.mipmap.ic_control_voice_pressed);
+        } else {
+            mVoice.setImageResource(R.mipmap.ic_control_voice);
         }
     }
 

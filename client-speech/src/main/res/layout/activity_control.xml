@@ -124,6 +124,7 @@
         <RelativeLayout
             android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true">
 
@@ -142,7 +143,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="43dip"
                     android:layout_marginTop="25dp"
-                    android:background="@mipmap/ic_control_sport" />
+                    android:src="@mipmap/ic_control_sport" />
 
                 <ImageView
                     android:id="@+id/voice_imageView"
@@ -151,7 +152,7 @@
                     android:layout_below="@+id/sport_imageView"
                     android:layout_marginLeft="17dp"
                     android:layout_marginTop="10dp"
-                    android:background="@mipmap/ic_control_voice_pressed" />
+                    android:src="@mipmap/ic_control_voice_pressed" />
 
                 <ImageView
                     android:id="@+id/setting_imageView"
@@ -160,7 +161,7 @@
                     android:layout_below="@+id/voice_imageView"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="10dp"
-                    android:background="@mipmap/ic_control_setting" />
+                    android:src="@mipmap/ic_control_setting" />
 
                 <ImageView
                     android:id="@+id/like_imageView"
@@ -170,7 +171,7 @@
                     android:layout_marginBottom="8dip"
                     android:layout_marginLeft="17dp"
                     android:layout_marginTop="10dp"
-                    android:background="@mipmap/ic_control_like" />
+                    android:src="@mipmap/ic_control_like" />
 
                 <ImageView
                     android:id="@+id/repeat_imageView"
@@ -178,7 +179,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/like_imageView"
                     android:layout_marginLeft="43dp"
-                    android:background="@mipmap/ic_repeat" />
+                    android:src="@mipmap/ic_repeat" />
 
 
             </RelativeLayout>
@@ -190,7 +191,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="-33dp"
-                android:background="@mipmap/ic_setting" />
+                android:src="@mipmap/ic_setting" />
         </RelativeLayout>
 
 

@@ -70,7 +70,7 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
 
 
     private boolean isAutoAction = false;
-    private boolean isSpeech = true;
+    private boolean isSpeech = false;
 
     private UdpControl udpControl;
 
@@ -621,13 +621,13 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
      */
     void sendSpeech() {
         String data = "";
-        if (!isSpeech) {//执行开
+        if (isSpeech) {//执行开
             data = "语音识别(开)";
-            mView.setVoicetVisiable(false);
+            mView.setVoicetVisiable(true);
             controlBytes[3] |= (byte) (1);
         } else {//执行关
             data = "语音识别(关)";
-            mView.setVoicetVisiable(true);
+            mView.setVoicetVisiable(false);
             controlBytes[3] &= (byte) 0xfe;
         }
 //        mView.setSpeechText(data);
