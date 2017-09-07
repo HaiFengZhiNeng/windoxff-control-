@@ -35,11 +35,8 @@ public class UnderstanderDemo extends Activity implements View.OnClickListener {
     private SpeechUnderstander mSpeechUnderstander;
 
 
-
-
-
     private String[] mCloudVoicersEntries;
-    private String[] mCloudVoicersValue ;
+    private String[] mCloudVoicersValue;
 
     private String mEngineType = SpeechConstant.TYPE_LOCAL;
     private static final String GRAMMAR_TYPE_BNF = "bnf";
@@ -65,8 +62,8 @@ public class UnderstanderDemo extends Activity implements View.OnClickListener {
         mSpeechUnderstander = SpeechUnderstander.createUnderstander(UnderstanderDemo.this, mSpeechUdrInitListener);
 
         // 云端发音人名称列表
-        mCloudVoicersEntries = getResources().getStringArray(R.array.voicer_cloud_entries);
-        mCloudVoicersValue = getResources().getStringArray(R.array.voicer_cloud_values);
+        mCloudVoicersEntries = getResources().getStringArray(R.array.voicer_cloud_entries_man);
+        mCloudVoicersValue = getResources().getStringArray(R.array.voicer_cloud_values_man);
 
         mLocalGrammar = FucUtil.readFile(this, "call.bnf", "utf-8");
 
@@ -144,7 +141,7 @@ public class UnderstanderDemo extends Activity implements View.OnClickListener {
         // 设置语言
         mSpeechUnderstander.setParameter(SpeechConstant.LANGUAGE, "zh_cn");
         // 设置语言区域
-        mSpeechUnderstander.setParameter(SpeechConstant.ACCENT,  "mandarin");
+        mSpeechUnderstander.setParameter(SpeechConstant.ACCENT, "mandarin");
 //        }
         // 设置语音前端点:静音超时时间，即用户多长时间不说话则当做超时处理
         mSpeechUnderstander.setParameter(SpeechConstant.VAD_BOS, "4000");
@@ -179,7 +176,6 @@ public class UnderstanderDemo extends Activity implements View.OnClickListener {
     }
 
 
-
     public static final String errorTip = "请确认是否有在 aiui.xfyun.cn 配置语义。（另外，已开通语义，但从1115（含1115）以前的SDK更新到1116以上版本SDK后，语义需要重新到 aiui.xfyun.cn 配置）";
     private SpeechUnderstanderListener mSpeechUnderstanderListener = new SpeechUnderstanderListener() {
         @Override
@@ -191,39 +187,39 @@ public class UnderstanderDemo extends Activity implements View.OnClickListener {
                 String text = result.getResultString();
                 if (!TextUtils.isEmpty(text)) {
                     mResult.setText(text);
-                    if( 0 != getResultError(text) ){
-                        L.d(TAG, errorTip );
+                    if (0 != getResultError(text)) {
+                        L.d(TAG, errorTip);
                     }
                 }
             } else {
-                L.d(TAG,"识别结果不正确。");
+                L.d(TAG, "识别结果不正确。");
             }
         }
 
         @Override
         public void onVolumeChanged(int volume, byte[] data) {
-            L.d(TAG,"当前正在说话，音量大小：" + volume);
-            L.d(TAG, data.length+"");
+            L.d(TAG, "当前正在说话，音量大小：" + volume);
+            L.d(TAG, data.length + "");
         }
 
         @Override
         public void onEndOfSpeech() {
             // 此回调表示：检测到了语音的尾端点，已经进入识别过程，不再接受语音输入
-            L.d(TAG,"结束说话");
+            L.d(TAG, "结束说话");
         }
 
         @Override
         public void onBeginOfSpeech() {
             // 此回调表示：sdk内部录音机已经准备好了，用户可以开始语音输入
-            L.d(TAG,"开始说话");
+            L.d(TAG, "开始说话");
         }
 
         @Override
         public void onError(SpeechError error) {
-            if( error.getErrorCode() == ErrorCode.MSP_ERROR_NO_DATA ){
-                L.d(TAG,error.getPlainDescription(true) );
-            }else{
-                L.d(TAG,error.getPlainDescription(true)+", "+errorTip);
+            if (error.getErrorCode() == ErrorCode.MSP_ERROR_NO_DATA) {
+                L.d(TAG, error.getPlainDescription(true));
+            } else {
+                L.d(TAG, error.getPlainDescription(true) + ", " + errorTip);
             }
         }
 
@@ -237,17 +233,17 @@ public class UnderstanderDemo extends Activity implements View.OnClickListener {
         }
     };
 
-    private int getResultError( final String resultText ){
+    private int getResultError(final String resultText) {
         int error = 0;
-        try{
+        try {
             final String KEY_ERROR = "error";
             final String KEY_CODE = "code";
-            final JSONObject joResult = new JSONObject( resultText );
-            final JSONObject joError = joResult.optJSONObject( KEY_ERROR );
-            if( null!=joError ){
-                error = joError.optInt( KEY_CODE );
+            final JSONObject joResult = new JSONObject(resultText);
+            final JSONObject joError = joResult.optJSONObject(KEY_ERROR);
+            if (null != joError) {
+                error = joError.optInt(KEY_CODE);
             }
-        }catch( Throwable e ){
+        } catch (Throwable e) {
             e.printStackTrace();
         }//end of try-catch
 
@@ -257,7 +253,7 @@ public class UnderstanderDemo extends Activity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if( null != mSpeechUnderstander ){
+        if (null != mSpeechUnderstander) {
             // 退出时释放连接
             mSpeechUnderstander.cancel();
             mSpeechUnderstander.destroy();

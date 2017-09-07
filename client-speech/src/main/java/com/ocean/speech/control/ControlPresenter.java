@@ -34,6 +34,7 @@ import com.ocean.speech.base.ControlBasePresenter;
 import com.ocean.speech.config.Constant;
 import com.ocean.speech.dao.DataBaseDao;
 import com.ocean.speech.dialog.InterfaceDialog;
+import com.ocean.speech.dialog.PersonSelectDialog;
 import com.ocean.speech.dialog.SceneDialog;
 import com.ocean.speech.udp.UdpControl;
 import com.ocean.speech.udp.UdpReceiver;
@@ -65,8 +66,9 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
         super(mView);
     }
 
-    private InterfaceDialog interfaceDialog = null;
-    private SceneDialog sceneDialog = null;
+    private InterfaceDialog interfaceDialog = null;//显示界面控制的Dialog
+    private SceneDialog sceneDialog = null;//显示DIY音频的 Dialog
+    private PersonSelectDialog selectDialog = null;// 选择发音人Dialog
 
 
     private boolean isAutoAction = false;
@@ -130,9 +132,6 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
     // 解析得到语义结果
     String finalText = "";
 
-    //发音人
-    private String[] mCloudVoicersEntries;
-    private String[] mCloudVoicersValue;
     //默认发音人
     private String voicer = "xiaoyan";
 
@@ -157,13 +156,11 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
         nlpControl.setmAIUIListener(mAIUIListener);
         nlpControl.init();
 
-        // 云端发音人名称列表
-        mCloudVoicersEntries = getContext().getResources().getStringArray(R.array.voicer_cloud_entries);
-        mCloudVoicersValue = getContext().getResources().getStringArray(R.array.voicer_cloud_values);
 
         controlBytes[0] = (byte) 0xAA;
         controlBytes[1] = (byte) 0x01;
-        controlBytes[3] &= (byte) ~(1);
+        controlBytes[3] |= (byte) (1);
+//        controlBytes[3] &= (byte) ~(1);
 //        controlBytes[3] &= (byte) 0xfe;
         controlBytes[6] = (byte) 0xBB;
 
@@ -479,9 +476,9 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
             public void run() {
                 //获取data数据
                 ArrayList<InterfaceBean> beans = new ArrayList<>();
-                beans.add(new InterfaceBean("", 1));
-                beans.add(new InterfaceBean("", 2));
-                beans.add(new InterfaceBean("", 3));
+                beans.add(new InterfaceBean("你好", 1));
+                beans.add(new InterfaceBean("你多大了", 2));
+                beans.add(new InterfaceBean("你是谁", 3));
                 beans.add(new InterfaceBean("", 4));
                 beans.add(new InterfaceBean("", 5));
                 beans.add(new InterfaceBean("", 6));
@@ -524,6 +521,11 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
             getDataBytes[1] = (byte) 0x03;
             getDataBytes[2] = (byte) 0xBB;
             isGetData = true;
+        }
+
+        @Override
+        public void sendPersonSelect(String text) {
+            voicer = text;
         }
     };
 
@@ -652,13 +654,14 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
         String text = mView.getEditText();
         if (TextUtils.isEmpty(text))
             return;
-        L.i(TAG, "AIUI纯文本信息-->" + text);
+        L.i(TAG, "AIUI纯文本信息-->" + text + "repeat " + isRepeat);
         if (isRepeat) {
             nlpControl.startTextNlp(text);
         } else {
             sendTextToByte(text);
+            isSendMsg = true;
         }
-        isSendMsg = true;
+
         mView.setEditText("");//清空文本框内容
     }
 
@@ -838,10 +841,10 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
      */
     void doRepear() {
         finalText = "";
-        if (!isRepeat) {
-            mView.setRepeatShow(true);
-        } else {
+        if (isRepeat) {
             mView.setRepeatShow(false);
+        } else {
+            mView.setRepeatShow(true);
         }
         isRepeat = !isRepeat;
     }
@@ -866,17 +869,11 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
      * 选择发音人
      */
     void showPersonSelectDialog() {
-        new AlertDialog.Builder(getContext()).setTitle("在线合成发音人选项")
-                .setSingleChoiceItems(mCloudVoicersEntries, // 单选框有几项,各是什么名字
-                        selectedNum, // 默认的选项
-                        new DialogInterface.OnClickListener() { // 点击单选框后的处理
-                            public void onClick(DialogInterface dialog,
-                                                int which) { // 点击了哪一项
-                                voicer = mCloudVoicersValue[which];//发音人 默认是小燕
-                                selectedNum = which;
-                                dialog.dismiss();
-                            }
-                        }).show();
+        if (selectDialog == null) {
+            selectDialog = new PersonSelectDialog(getContext(), "");
+        }
+        selectDialog.setClickListener(clickListenerInterface);
+        selectDialog.show();
     }
 
     private void resetData() {
@@ -894,6 +891,8 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
         void sendScene(int id);
 
         void sendRefreshData();
+
+        void sendPersonSelect(String text);
     }
 
     public interface OnListenerUDPServer {
@@ -1052,47 +1051,28 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
                                 L.e("GG", resultStr.length() + "'");
 //                                Log.e(TAG, resultStr);
                                 if (resultStr != null && resultStr.length() > 3) {
-                                    if (isRepeat) {
-                                        if (jsonObject.has("answer")) {
-                                            //被语音语义识别，返回结果
-                                            JSONObject answerObj = jsonObject.getJSONObject("answer");
-                                            finalText = answerObj.optString("text");
-                                            //发送给机器人
-//                                        isSend = true;
-                                            Log.e(TAG, "方法 发送给机器人");
-                                            sendTextToByte(finalText);
-                                            isSendMsg = true;
-                                            Toast.makeText(getContext(), "已发送", Toast.LENGTH_SHORT).show();
-                                        } else if (jsonObject.has("rc") && "4" == jsonObject.getString("rc")) {
-                                            //不能返回结果
-                                            finalText = "我好想没有听懂你说的是什么";
-                                            //发送给机器人
-//                                        isSend = true;
-                                            sendTextToByte(finalText);
-                                            isSendMsg = true;
-                                            Toast.makeText(getContext(), "已发送", Toast.LENGTH_SHORT).show();
-                                        }
-                                    } else {
-                                        if (jsonObject.has("text")) {
-                                            //被语音语义识别，返回结果
-                                            finalText = jsonObject.optString("text");
-                                            //发送给机器人
-//                                        isSend = true;
-                                            Log.e(TAG, "方法 发送给机器人");
-                                            sendTextToByte(finalText);
-                                            isSendMsg = true;
-                                            Toast.makeText(getContext(), "已发送", Toast.LENGTH_SHORT).show();
-                                        } else if (jsonObject.has("rc") && "4" == jsonObject.getString("rc")) {
-                                            //不能返回结果
-                                            finalText = "我好想没有听懂你说的是什么";
-                                            //发送给机器人
-//                                        isSend = true;
-                                            sendTextToByte(finalText);
-                                            isSendMsg = true;
-                                            Toast.makeText(getContext(), "已发送", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
 
+                                    //  判断是否是复读
+//                                    if (!isRepeat) {
+                                    if (jsonObject.has("answer")) {
+                                        //被语音语义识别，返回结果
+                                        JSONObject answerObj = jsonObject.getJSONObject("answer");
+                                        finalText = answerObj.optString("text");
+                                        //发送给机器人
+//                                        isSend = true;
+                                        Log.e(TAG, "方法 发送给机器人");
+                                        sendTextToByte(finalText);
+                                        isSendMsg = true;
+                                        Toast.makeText(getContext(), "已发送" + finalText, Toast.LENGTH_SHORT).show();
+                                    } else if (jsonObject.has("rc") && "4".equals(jsonObject.getString("rc"))) {
+                                        //不能返回结果
+                                        finalText = "我好想没有听懂你说的是什么";
+                                        //发送给机器人
+//                                        isSend = true;
+                                        sendTextToByte(finalText);
+                                        isSendMsg = true;
+                                        Toast.makeText(getContext(), "已发送" + finalText, Toast.LENGTH_SHORT).show();
+                                    }
                                 }
 //                                L.e( TAG+"answer.text==========>", finalText +"isSend=="+isSend+"");
                             }
@@ -1101,12 +1081,6 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
                         e.printStackTrace();
                     }
 
-//                    if (isSend){
-//                        sendTextToByte(finalText);
-//                        L.e( TAG+"answer.tex.isSend==========>", finalText );
-//                        Toast.makeText(getContext(), "已发送", Toast.LENGTH_SHORT).show();
-//                        isSend = false;
-//                    }
                 }
                 break;
 

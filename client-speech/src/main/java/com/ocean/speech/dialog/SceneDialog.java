@@ -132,18 +132,21 @@ public class SceneDialog implements DialogInterface.OnDismissListener, AdapterVi
                 vh = new ViewHolder();
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.dialog_scene_item, null);
                 vh.tv = (TextView) convertView.findViewById(R.id.scene_item_btn);
+                vh.scene_item = (TextView) convertView.findViewById(R.id.scene_item);
+
                 convertView.setTag(vh);
             } else {
                 vh = (ViewHolder) convertView.getTag();
             }
 
-            vh.tv.setText(been.get(position).getId()+"");
-
+            vh.tv.setText(been.get(position).getId() + "");
+            vh.scene_item.setText(been.get(position).getContent() + "");
             return convertView;
         }
 
         class ViewHolder {
             TextView tv;
+            TextView scene_item;
         }
     }
 

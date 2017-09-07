@@ -1,31 +1,110 @@
 <resources>
     <string name="app_name">远程遥控</string>
-    <string-array name="voicer_cloud_entries">
+    <string-array name="voicer_cloud_entries_man">
+        <item>小宇—男青、中英、普通话</item>
+        <item>亨利—男青、英</item>
+        <item>小峰—男青、中英、普通话</item>
+        <item>小坤—男青、中、河南话</item>
+        <item>小强—男青、中、湖南话</item>
+        <item>许久 青年男声</item>
+        <item>许多 青年男声</item>
+        <item>粤语 大龙 青年男声</item>
+        <item>美式英语 亨利 青年男声</item>
+        <item>美式英语 Tom 青年男声</item>
+        <item>美式英语 John 青年男声</item>
+    </string-array>
+    <string-array name="voicer_cloud_values_man">
+        <item>xiaoyu</item>
+        <item>henry</item>
+        <item>vixf</item>
+        <item>xiaokun</item>
+        <item>xiaoqiang</item>
+        <item>aisjiuxu</item>
+        <item>aisduoxu</item>
+        <item>dalong</item>
+        <item>henry</item>
+        <item>aistom</item>
+        <item>aisjohn</item>
+    </string-array>
+    <string-array name="voicer_cloud_entries_woman">
         <item>小燕—女青、中英、普通话</item>
         <item>凯瑟琳—女青、英</item>
+        <item>玛丽—女青、英</item>
+        <item>小研—女青、中英、普通话</item>
+        <item>小琪—女青、中英、普通话</item>
         <item>小梅—女青、中英、粤语</item>
         <item>小莉—女青、中英、台湾普通话</item>
         <item>小蓉—女青、中、四川话</item>
         <item>小芸—女青、中、东北话</item>
-        <item>小坤—男青、中、河南话</item>
-        <item>小强—男青、中、湖南话</item>
         <item>小莹—女青、中、陕西话</item>
+        <item>小萍	青年女声</item>
+        <item>小筠	女声播音员</item>
+        <item>小婧 青年女声</item>
+        <item>叶芳 青年女声</item>
+        <item>小梦 青年女声</item>
+        <item>小春 青年女声</item>
+        <item>子琪 青年女声</item>
+        <item>台普 晓琳 青年女声</item>
+        <item>东北话 晓倩 青年女声</item>
+        <item>法语 玛丽安 青年女声</item>
+        <item>俄语 阿拉本 青年女声</item>
+        <item>西班牙语 加芙列拉 青年女声</item>
+        <item> 印地语 艾伯哈 青年女声</item>
+        <item>越南语 小云 青年女声</item>
     </string-array>
-    <string-array name="voicer_cloud_values">
+    <string-array name="voicer_cloud_values_woman">
         <item>xiaoyan</item>
         <item>catherine</item>
+        <item>vimary</item>
+        <item>vixy</item>
+        <item>xiaoqi</item>
         <item>xiaomei</item>
         <item>xiaolin</item>
         <item>xiaorong</item>
         <item>xiaoqian</item>
-        <item>xiaokun</item>
-        <item>xiaoqiang</item>
         <item>vixying</item>
+        <item>aisxping</item>
+        <item>aisjying</item>
+        <item>aisjinger</item>
+        <item>yefang</item>
+        <item>aisxmeng</item>
+        <item>aismengchun</item>
+        <item>ziqi</item>
+        <item>aisxlin</item>
+        <item>xiaoqian</item>
+        <item>mariane</item>
+        <item>allabent</item>
+        <item>gabriela</item>
+        <item>abha</item>
+        <item>xiaoyun</item>
     </string-array>
 
-    <string name="speech">开启语音(开)</string>
+    <string-array name="voicer_cloud_entries_old">
+        <item>老孙—男老、中、普通话</item>
+    </string-array>
+    <string-array name="voicer_cloud_values_old">
+        <item>vils</item>
+    </string-array>
+    <string-array name="voicer_cloud_entries_child">
+        <item>小新—男童、中、普通话</item>
+        <item>楠楠—女童、中、普通话</item>
+        <item>许小宝 童声</item>
+        <item>鸭先生 卡通人物</item>
+        <item>小新 卡通人物</item>
+        <item>小丸子 卡通人物</item>
+    </string-array>
+    <string-array name="voicer_cloud_values_child">
+        <item>xiaoxin</item>
+        <item>nannan</item>
+        <item>aisbabyxu</item>
+        <item>aisduck</item>
+        <item>xiaoxin</item>
+        <item>xiaowanzi</item>
+    </string-array>
+
     <string name="auto_action">自由运动(开)</string>
     <string name="interface_control">界面控制</string>
+    <string name="speech">开启语音(开)</string>
     <string name="video_cancel_text">结束视频通话</string>
     <string name="video_accept_text">开始视频聊天</string>
 

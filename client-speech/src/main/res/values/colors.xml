@@ -13,4 +13,7 @@
     <color name="color_login_stroke">#CDCFD4</color>
     <color name="color_login_bg">#ECEEF3</color>
     <color name="color_control_cursor">#01405f</color>
+    <color name="color_person_divider">#53565A</color>
+    <color name="color_perosn_text">#25599A</color>
+    <color name="color_person_select_no">#666</color>
 </resources>
