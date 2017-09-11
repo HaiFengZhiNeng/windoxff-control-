@@ -53,4 +53,8 @@ public interface IControlView extends UiView {
 
     void setRepeatShow(boolean isShow);
 
+    void setVoiceText(String text);
+
+    void setVoiceBack(boolean isClick);
+
 }

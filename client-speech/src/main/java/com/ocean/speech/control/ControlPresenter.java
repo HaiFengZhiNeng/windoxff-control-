@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.iflytek.aiui.AIUIConstant;
 import com.iflytek.aiui.AIUIEvent;
 import com.iflytek.aiui.AIUIListener;
+import com.iflytek.cloud.thirdparty.V;
 import com.ocean.mvp.library.net.NetClient;
 import com.ocean.mvp.library.utils.L;
 import com.ocean.speech.R;
@@ -135,6 +136,7 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
     //默认发音人
     private String voicer = "xiaoyan";
 
+    private boolean isSpeak = true;
 
     @Override
     public void onCreate(Bundle saveInstanceState) {
@@ -772,11 +774,21 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
      * 发送语音
      */
     void startAsr() {
-        mView.setAsrLayoutVisible(false);
-        mView.setAnimationVisible(true);
-        if (nlpControl != null) {
-            nlpControl.startVoiceNlp();
+        if (isSpeak) {
+            mView.setAsrLayoutVisible(false);
+            mView.setAnimationVisible(false);//音量动画 关闭
+            mView.setVoiceText("结束说话");
+            mView.setVoiceBack(true);
+            if (nlpControl != null) {
+                nlpControl.startVoiceNlp();
+            }
+        } else {
+            nlpControl.stopVoiceNlp();
+            mView.setVoiceText("点击开始");
+            mView.setVoiceBack(false);
         }
+        isSpeak = !isSpeak;
+
 //            if (mAsr != null)
 //                mAsr.startAsr();
     }
@@ -1018,6 +1030,9 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
         }
     }
 
+    /**
+     * AIUI 回调
+     */
     private AIUIListener mAIUIListener = new AIUIListener() {
 
         @Override
@@ -1026,6 +1041,7 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
                 case AIUIConstant.EVENT_WAKEUP:
                     Log.i(TAG, "on event: " + event.eventType);
                     showTip("进入识别状态");
+                    L.i("GG", "on event: " + event.eventType);
                     break;
 
                 case AIUIConstant.EVENT_RESULT: {
@@ -1092,10 +1108,13 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
                 case AIUIConstant.EVENT_VAD: {
                     if (AIUIConstant.VAD_BOS == event.arg1) {
                         showTip("找到vad_bos");
+                        L.i("GG", "on 找到vad_bos: ");
                     } else if (AIUIConstant.VAD_EOS == event.arg1) {
                         showTip("找到vad_eos");
+                        L.i("GG", "on 找到vad_eos: ");
                     } else {
                         showTip("" + event.arg2);
+                        L.i("GG", "event.arg2");
                     }
                 }
                 break;
@@ -1103,8 +1122,9 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
                 case AIUIConstant.EVENT_START_RECORD: {
                     Log.i(TAG, "on event: " + event.eventType);
 //                    mView.setAnimationVisible(true);
-//                    mView.getVoiceView().setSignalEMA((int)Math.random()*10+1);
+//                    mView.getVoiceView().setSignalEMA((int) Math.random() * 10 + 1);
                     showTip("开始录音");
+                    L.i("GG", "开始录音");
                 }
                 break;
 
@@ -1112,6 +1132,9 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
                     Log.i(TAG, "on event: " + event.eventType);
 //                    mView.setAnimationVisible(false);
                     showTip("停止录音");
+                    L.i("GG", "停止录音");
+                    mView.setVoiceText("点击开始");
+                    mView.setVoiceBack(false);
                 }
                 break;
 
@@ -1127,6 +1150,7 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
                     } else if (AIUIConstant.STATE_WORKING == mAIUIState) {
                         // AIUI工作中，可进行交互
                         showTip("STATE_WORKING");
+                        L.i("GG", "STATE_WORKING");
                     }
                 }
                 break;

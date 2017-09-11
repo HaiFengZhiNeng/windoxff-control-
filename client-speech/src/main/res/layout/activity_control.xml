@@ -271,6 +271,7 @@
             android:layout_height="45dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:layout_marginBottom="8dp"
             android:background="@mipmap/ic_input_all"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -286,11 +287,14 @@
 
             <Button
                 android:id="@+id/voice_btn"
-                android:layout_width="320dp"
+                android:layout_width="220dp"
                 android:layout_height="match_parent"
+                android:layout_margin="3dp"
                 android:layout_toRightOf="@+id/change_text_voice"
+                android:background="@mipmap/ic_voice_bg"
+                android:gravity="center"
                 android:text="点击开始"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
             <LinearLayout
                 android:id="@+id/edit_text_layout"
@@ -298,12 +302,18 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/change_text_voice"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/edit_text"
                     android:layout_width="240dp"
-                    android:layout_height="50dp" />
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@null"
+                    android:drawableBottom="@drawable/line_edittext"
+                    android:gravity="bottom"
+                    android:text="" />
 
                 <TextView
                     android:id="@+id/send_text"
@@ -338,6 +348,7 @@
             android:layout_height="40dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:layout_marginBottom="8dp"
             android:background="@mipmap/ic_input_none">
 
             <ImageView

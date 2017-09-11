@@ -81,6 +81,13 @@ public class NlpControl {
 
         return params;
     }
+    public void stopVoiceNlp(){
+        // 停止录音
+        String params = "sample_rate=16000,data_type=audio";
+        AIUIMessage stopWriteMsg = new AIUIMessage(AIUIConstant.CMD_STOP_RECORD, 0, 0, params, null);
+
+        mAIUIAgent.sendMessage(stopWriteMsg);
+    }
 
     /**
      * 文本语义

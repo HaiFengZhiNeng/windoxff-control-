@@ -314,7 +314,7 @@ public class ControlView extends ControlBaseActivity<ControlPresenter> implement
             mChangeTxtOrVoice.setImageResource(R.mipmap.ic_input_voice);
 
         } else {
-            mEditLayout.setVisibility(View.INVISIBLE);
+            mEditLayout.setVisibility(View.GONE);
             mAsrBtn.setVisibility(View.VISIBLE);
             mChangeTxtOrVoice.setImageResource(R.mipmap.ic_input);
         }
@@ -434,6 +434,20 @@ public class ControlView extends ControlBaseActivity<ControlPresenter> implement
             mRepeat.setImageResource(R.mipmap.ic_repeat_pressed);
         } else {
             mRepeat.setImageResource(R.mipmap.ic_repeat);
+        }
+    }
+
+    @Override
+    public void setVoiceText(String text) {
+        mAsrBtn.setText(text);
+    }
+
+    @Override
+    public void setVoiceBack(boolean isClick) {
+        if(isClick){
+            mAsrBtn.setBackgroundResource(R.mipmap.ic_voice_hangup);
+        }else{
+            mAsrBtn.setBackgroundResource(R.mipmap.ic_voice_bg);
         }
     }
 
