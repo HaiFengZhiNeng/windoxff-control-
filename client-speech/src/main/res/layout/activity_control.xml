@@ -276,7 +276,7 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="3dp"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/change_text_voice"
@@ -294,7 +294,7 @@
                 android:background="@mipmap/ic_voice_bg"
                 android:gravity="center"
                 android:text="点击开始"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <LinearLayout
                 android:id="@+id/edit_text_layout"
@@ -303,7 +303,7 @@
                 android:layout_toRightOf="@+id/change_text_voice"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <EditText
                     android:id="@+id/edit_text"
