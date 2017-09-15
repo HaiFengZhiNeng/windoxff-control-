@@ -16,7 +16,7 @@
     <string-array name="voicer_cloud_values_man">
         <item>xiaoyu</item>
         <item>henry</item>
-        <item>vixf</item>
+        <item>xiaofeng</item>
         <item>xiaokun</item>
         <item>xiaoqiang</item>
         <item>aisjiuxu</item>
@@ -54,7 +54,7 @@
     </string-array>
     <string-array name="voicer_cloud_values_woman">
         <item>xiaoyan</item>
-        <item>catherine</item>
+        <item>aiscatherine</item>
         <item>vimary</item>
         <item>vixy</item>
         <item>xiaoqi</item>
@@ -130,5 +130,26 @@
     <string name="ec_voip_call_fail_not_find_appid">第三方应用ID未找到</string>
     <string name="ec_voip_call_fail_not_online_only_call">第三方未上线应用仅限呼叫已配置测试号码</string>
     <string name="ec_voip_call_fail">呼叫失败，请稍后重试&#8230;</string>
+    <string name="language_type">选择语言</string>
+    <string name="pref_key_iat_show">iat_show</string>
+    <string name="text_begin">请开始说话…</string>
+    <string name="app_youdao_id">15f4a9215ad601f5</string>
 
+    <!-- 语言 -->
+    <string-array name="language_entries">
+        <item>普通话</item>
+        <item>粤语</item>
+        <item>英语</item>
+    </string-array>
+    <string-array name="language_values">
+        <item>mandarin</item>
+        <item>cantonese</item>
+        <item>en_us</item>
+    </string-array>
+
+    <string-array name="no_result">
+        <item>我好像没有听懂您说的是什么</item>
+        <item>我好想听您再说一遍</item>
+        <item>我的耳朵可能失聪了，您能再说一遍吗</item>
+    </string-array>
 </resources>

@@ -10,6 +10,7 @@ import com.ocean.mvp.library.net.NetClient;
 import com.ocean.mvp.library.net.NetMessage;
 import com.ocean.mvp.library.net.SendRequestListener;
 import com.ocean.speech.dbhelper.DBHelper;
+import com.youdao.sdk.app.YouDaoApplication;
 
 /**
  * Created by zhangyuanyuan on 2017/7/5.
@@ -32,6 +33,11 @@ public class SpeechApplication extends Application implements SendRequestListene
          */
         SpeechUtility.createUtility(getApplicationContext(), SpeechConstant.APPID +"=599d6109"+ "," + SpeechConstant.ENGINE_MODE + "=" + SpeechConstant.MODE_MSC);
         Setting.setShowLog(false);
+
+
+        // 以下语句用于设置日志开关（默认开启），设置成false时关闭语音云SDK日志打印
+        // Setting.setShowLog(false);
+        YouDaoApplication.init(this, getResources().getString(R.string.app_youdao_id));//创建应用，每个应用都会有一个Appid，绑定对应的翻译服务实例，即可使用
 
     }
 

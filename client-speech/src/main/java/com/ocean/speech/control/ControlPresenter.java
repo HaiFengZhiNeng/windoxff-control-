@@ -2,9 +2,11 @@ package com.ocean.speech.control;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +18,8 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
+import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -30,6 +34,7 @@ import com.ocean.mvp.library.utils.L;
 import com.ocean.speech.R;
 import com.ocean.speech.SpeechApplication;
 import com.ocean.speech.asr.AsrControl;
+import com.ocean.speech.asr.CustomControl;
 import com.ocean.speech.asr.NlpControl;
 import com.ocean.speech.base.ControlBasePresenter;
 import com.ocean.speech.config.Constant;
@@ -41,6 +46,7 @@ import com.ocean.speech.udp.UdpControl;
 import com.ocean.speech.udp.UdpReceiver;
 import com.ocean.speech.util.CallFailReason;
 import com.ocean.speech.util.MyAnimation;
+import com.ocean.speech.youdao.TranslateLanguage;
 import com.yuntongxun.ecsdk.ECDevice;
 import com.yuntongxun.ecsdk.ECVoIPCallManager;
 import com.yuntongxun.ecsdk.ECVoIPSetupManager;
@@ -53,6 +59,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import static com.ocean.speech.select.SelectPresenter.RESULT_CODE_STARTAUDIO;
 
@@ -110,6 +117,12 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
     private NlpControl nlpControl;
     private int mAIUIState = AIUIConstant.STATE_IDLE;
 
+    private CustomControl customControl;
+    /**
+     *语义理解返回结果，如果需要翻译成英文：true,否则：false
+     */
+    private boolean needTransalte = false;
+
     private HashMap<String, Object> asrMap = null;
     private String asrAnswer = "";
     private int textSendCount = 0;
@@ -158,6 +171,8 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
         nlpControl.setmAIUIListener(mAIUIListener);
         nlpControl.init();
 
+        customControl = new CustomControl(SpeechApplication.from(getContext()));
+        customControl.setmAIUIListener(mAIUIListener);
 
         controlBytes[0] = (byte) 0xAA;
         controlBytes[1] = (byte) 0x01;
@@ -528,6 +543,17 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
         @Override
         public void sendPersonSelect(String text) {
             voicer = text;
+            SharedPreferences sp = getContext().getSharedPreferences("com.iflytek.setting", Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            if (text.equals("henry") || text.equals("aiscatherine") || text.equals("catherine") || text.equals("vimary") || text.equals("aistom")) {
+                editor.putString("iat_language_preference","en_us");
+            }else if(text.equals("dalong") ||text.equals("xiaomei")) {
+                editor.putString("iat_language_preference","cantonese");
+            }else {
+                editor.putString("iat_language_preference", "mandarin");
+            }
+            editor.commit();
+            Log.i("WCJ",getContext().getSharedPreferences("com.iflytek.setting", Activity.MODE_PRIVATE).getString("iat_language_preference","wu"));
         }
     };
 
@@ -658,7 +684,27 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
             return;
         L.i(TAG, "AIUI纯文本信息-->" + text + "repeat " + isRepeat);
         if (isRepeat) {
-            nlpControl.startTextNlp(text);
+            SharedPreferences sp = getContext().getSharedPreferences("com.iflytek.setting", Activity.MODE_PRIVATE);
+            String language = sp.getString("iat_language_preference", "mandarin");
+            if(language.equals("en_us")){
+                customControl.setFromQuestion(true);
+                customControl.query(text, TranslateLanguage.LanguageType.EN, TranslateLanguage.LanguageType.ZH);
+                customControl.setOnQueryListener(new CustomControl.QueryListener() {
+                    @Override
+                    public void onQueryBack(String result) {
+
+                    }
+
+                    @Override
+                    public void translateBack(String translates) {
+                        needTransalte = true;
+                        nlpControl.startTextNlp(translates);
+                    }
+                });
+            }else {
+                needTransalte = false;
+                nlpControl.startTextNlp(text);
+            }
         } else {
             sendTextToByte(text);
             isSendMsg = true;
@@ -724,6 +770,9 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
             sendMsg[i + 3] = textBytes[i];
             sendMsg[size - 2] ^= sendMsg[i + 3];
         }
+        mView.setVoiceText("点击开始");
+        mView.setVoiceBack(false);
+        isSpeak = !isSpeak;
     }
 
     /**
@@ -779,8 +828,63 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
             mView.setAnimationVisible(false);//音量动画 关闭
             mView.setVoiceText("结束说话");
             mView.setVoiceBack(true);
-            if (nlpControl != null) {
-                nlpControl.startVoiceNlp();
+
+            SharedPreferences sp = getContext().getSharedPreferences("com.iflytek.setting", Activity.MODE_PRIVATE);
+            String language = sp.getString("iat_language_preference", "mandarin");
+            if ("en_us".equals(language)){//英语
+                //英语流程
+                Log.i("WCJ", "你选择了英语，语言：" + language);
+                if (customControl != null) {
+                    if (isRepeat){//英语语义理解
+                        //需要翻译成英语，进行自定义语义理解流程
+                        needTransalte = true;
+                    }else {//英语复读
+                        //进行自定义语义理解流程
+                        customControl.setRepeatEnglish(true);
+                        customControl.setOnQueryListener(new CustomControl.QueryListener() {
+                            @Override
+                            public void onQueryBack(String result) {
+
+                            }
+
+                            @Override
+                            public void translateBack(String translates) {
+                                sendTextToByte(translates);
+                                isSendMsg = true;
+                            }
+                        });
+                    }
+                    customControl.init();
+                }
+
+            }else if("cantonese".equals(language)){//粤语:先听写成汉语在进行复读或者语义理解
+                Log.i("WCJ","你选择了粤语，语言："+language);
+                if (customControl != null) {
+                    customControl.setCantonese(true);
+                    customControl.setOnQueryListener(new CustomControl.QueryListener() {
+                        @Override
+                        public void onQueryBack(String result) {
+                            if (isRepeat) {//语义理解
+                                needTransalte = false;
+                                nlpControl.startTextNlp(result);
+                            } else {//复读
+                                sendTextToByte(result);
+                                isSendMsg = true;
+                            }
+                        }
+
+                        @Override
+                        public void translateBack(String translates) {
+                        }
+                    });
+                    customControl.init();
+                }
+            } else {
+                Log.i("WCJ","你选择了中文，语言："+language);
+                if (nlpControl != null) {
+                    needTransalte = false;
+                    nlpControl.startVoiceNlp();
+                }
             }
         } else {
             nlpControl.stopVoiceNlp();
@@ -1065,32 +1169,10 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
                                 JSONObject jsonObject = new JSONObject(resultStr);
                                 L.i(TAG + "answer==========>", resultStr);
                                 L.e("GG", resultStr.length() + "'");
-//                                Log.e(TAG, resultStr);
                                 if (resultStr != null && resultStr.length() > 3) {
-
-                                    //  判断是否是复读
-//                                    if (!isRepeat) {
-                                    if (jsonObject.has("answer")) {
-                                        //被语音语义识别，返回结果
-                                        JSONObject answerObj = jsonObject.getJSONObject("answer");
-                                        finalText = answerObj.optString("text");
-                                        //发送给机器人
-//                                        isSend = true;
-                                        Log.e(TAG, "方法 发送给机器人");
-                                        sendTextToByte(finalText);
-                                        isSendMsg = true;
-                                        Toast.makeText(getContext(), "已发送" + finalText, Toast.LENGTH_SHORT).show();
-                                    } else if (jsonObject.has("rc") && "4".equals(jsonObject.getString("rc"))) {
-                                        //不能返回结果
-                                        finalText = "我好想没有听懂你说的是什么";
-                                        //发送给机器人
-//                                        isSend = true;
-                                        sendTextToByte(finalText);
-                                        isSendMsg = true;
-                                        Toast.makeText(getContext(), "已发送" + finalText, Toast.LENGTH_SHORT).show();
-                                    }
+                                    //语义分析
+                                    speechAnalysis(jsonObject);
                                 }
-//                                L.e( TAG+"answer.text==========>", finalText +"isSend=="+isSend+"");
                             }
                         }
                     } catch (Throwable e) {
@@ -1169,6 +1251,102 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
 
     };
 
+    /**
+     * 将AIUI监听中返回的结果提出来
+     * @param jsonObject
+     * @throws JSONException
+     */
+    private void speechAnalysis(JSONObject jsonObject) throws JSONException {
+        if (jsonObject.has("answer")) {
+            //被语音语义识别，返回结果
+            JSONObject answerObj = jsonObject.getJSONObject("answer");
+            if(isRepeat){//有结果——不复读
+                finalText = answerObj.optString("text");
+                Log.e(TAG, "方法 发送给机器人");
+                if (needTransalte) {//英文——语义理解
+                    customControl.setOnlyOne(false);
+                    customControl.setTranslateSource(true);
+                    customControl.query(finalText, TranslateLanguage.LanguageType.ZH, TranslateLanguage.LanguageType.EN);
+                    customControl.setOnQueryListener(new CustomControl.QueryListener() {
+                        @Override
+                        public void onQueryBack(String result) {
+                            sendTextToByte(result);
+                            isSendMsg = true;
+                            Toast.makeText(getContext(), "已发送" + result, Toast.LENGTH_SHORT).show();
+                            Log.i(TAG+"WCJ英文语音语义结果","已发送" + result);
+                        }
+
+                        @Override
+                        public void translateBack(String translates) {
+
+                        }
+                    });
+                }else {//中文——语义理解
+                    sendTextToByte(finalText);
+                    isSendMsg = true;
+                    Toast.makeText(getContext(), "已发送" + finalText, Toast.LENGTH_SHORT).show();
+                    Log.i(TAG+"WCJ中文语音语义结果","已发送" + finalText);
+                }
+            }else {//有结果——复读
+                JSONObject question = answerObj.optJSONObject("question");
+                String repeatText = question.optString("q");
+                if (needTransalte) {
+                    customControl.setFromQuestion(true);
+                    customControl.query(repeatText, TranslateLanguage.LanguageType.ZH, TranslateLanguage.LanguageType.EN);
+                    customControl.setOnQueryListener(new CustomControl.QueryListener() {
+                        @Override
+                        public void onQueryBack(String result) {
+
+                        }
+
+                        @Override
+                        public void translateBack(String translates) {
+                            sendTextToByte(translates);
+                            isSendMsg = true;
+                        }
+                    });
+                }else {
+                    sendTextToByte(repeatText);
+                    isSendMsg = true;
+                }
+            }
+        } else if (jsonObject.has("rc") && "4".equals(jsonObject.getString("rc"))) {
+            //不能返回结果
+            if (isRepeat){//无结果——不复读
+                //随机在结果集中找出一个结果输出
+                String[] arrResult= getContext().getResources().getStringArray(R.array.no_result);
+                finalText = arrResult[new Random().nextInt(arrResult.length)];
+                if (needTransalte) {//英文语义理解——无结果
+                    customControl.setOnlyOne(false);
+                    customControl.setTranslateSource(true);
+                    customControl.query(finalText, TranslateLanguage.LanguageType.ZH, TranslateLanguage.LanguageType.EN);
+                    customControl.setOnQueryListener(new CustomControl.QueryListener() {
+                        @Override
+                        public void onQueryBack(String result) {
+                            sendTextToByte(result);
+                            isSendMsg = true;
+                            Toast.makeText(getContext(), "已发送" + result, Toast.LENGTH_SHORT).show();
+                            Log.i(TAG+"WCJ英文语音语义无结果","已发送" + result);
+                        }
+                        @Override
+                        public void translateBack(String translates) {
+
+                        }
+                    });
+                }else {//中文语义理解——无结果
+                    sendTextToByte(finalText);
+                    isSendMsg = true;
+                    Toast.makeText(getContext(), "已发送" + finalText, Toast.LENGTH_SHORT).show();
+                    Log.i(TAG+"WCJ中文语音语义无结果","已发送" + finalText);
+                }
+            }else {//无结果——复读
+                String repeatStr = jsonObject.optString("text");
+                sendTextToByte(repeatStr);
+                isSendMsg = true;
+            }
+        }
+    }
+
     private void showTip(String tip) {
 //        Toast.makeText(application,tip,Toast.LENGTH_SHORT).show();
     }
@@ -1190,4 +1368,37 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
                 break;
         }
     }
+
+    /**
+     * 选择语言类型:中文，粤语，英文
+     */
+//    public void showLanguageType() {
+//        final String[] language_entries = getContext().getResources().getStringArray(R.array.language_entries);
+//        final String[] language_values = getContext().getResources().getStringArray(R.array.language_values);
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
+//                .setTitle(R.string.language_type)
+//                .setItems(language_entries, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        SharedPreferences sp = getContext().getSharedPreferences("com.iflytek.setting", Activity.MODE_PRIVATE);
+//                        SharedPreferences.Editor editor = sp.edit();
+//                        switch (i){
+//                            case 0:
+//                                editor.putString("iat_language_preference",language_values[0]);
+//                                break;
+//                            case 1:
+//                                editor.putString("iat_language_preference",language_values[1]);
+//                                break;
+//                            case 2:
+//                                editor.putString("iat_language_preference",language_values[2]);
+//                                break;
+//                        }
+//                        editor.commit();
+//                        Log.i("WCJ",getContext().getSharedPreferences("com.iflytek.setting", Activity.MODE_PRIVATE).getString("iat_language_preference","wu"));
+//                        fullScreen();
+//                    }
+//                });
+//        builder.show();
+//    }
+
 }
