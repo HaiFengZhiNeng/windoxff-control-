@@ -67,13 +67,13 @@ public class SelectPresenter extends ControlBasePresenter<SelectView> {
 //            callAction.putExtra(Constant.EXTRA_OUTGOING_CALL, false);
             getContext().startActivity(callAction);
         } else {
-            String mCurrentCallId = ECDevice.getECVoIPCallManager().makeCall(callType, "15554955416");//17600738557
+            String mCurrentCallId = ECDevice.getECVoIPCallManager().makeCall(callType, "15505398047");//17600738557
             if (!"".equals(mCurrentCallId)) {
                 //音频
                 callAction.setClass(getContext(), VoiceView.class);
                 callAction.putExtra(ACTION_CALLBACKING, true);
-                callAction.putExtra(Constant.EXTRA_CALL_NAME, "15554955416");
-                callAction.putExtra(Constant.EXTRA_CALL_NUMBER, "15554955416");
+                callAction.putExtra(Constant.EXTRA_CALL_NAME, "15505398047");
+                callAction.putExtra(Constant.EXTRA_CALL_NUMBER, "15505398047");
                 callAction.putExtra(ECDevice.CALLTYPE, callType);
                 callAction.putExtra(ECDevice.CALLID, mCurrentCallId);
                 callAction.putExtra(Constant.EXTRA_OUTGOING_CALL, true);

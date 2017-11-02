@@ -107,6 +107,7 @@ public class VoicePresenter extends ControlBasePresenter<IVoiceView> {
     private void initCall() {
 
         //获取是否是呼入还是呼出
+
         if (mIncomingCall) {
             // 来电
             mCallId = ((Activity) mView).getIntent().getStringExtra(ECDevice.CALLID);

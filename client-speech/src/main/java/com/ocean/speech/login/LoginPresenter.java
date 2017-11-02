@@ -73,19 +73,7 @@ public class LoginPresenter extends ControlBasePresenter<ILoginView> {
         if (!isInitSuccess)
             return;
         L.e("key", "初始化SDK及登陆代码完成");
-        /**
-         * 设置接收VoIP来电事件通知Intent
-         * 呼入界面activity、开发者需修改该类
-         * */
-        Intent intent = new Intent(getContext(), VoiceView.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        ECDevice.setPendingIntent(pendingIntent);
 
-        /**
-         * 登录回调
-         */
-        ECDevice.setOnDeviceConnectListener(onECDeviceConnectListener);
 
         ECInitParams params = ECInitParams.createParams();
         params.setUserid(username);
@@ -95,6 +83,19 @@ public class LoginPresenter extends ControlBasePresenter<ILoginView> {
         params.setAuthType(ECInitParams.LoginAuthType.NORMAL_AUTH);
         //DloginMode（强制上线：FORCE_DlogIN  默认登录：AUTO。使用方式详见注意事项）
         params.setMode(ECInitParams.LoginMode.FORCE_LOGIN);
+        /**
+         * 登录回调
+         */
+        ECDevice.setOnDeviceConnectListener(onECDeviceConnectListener);
+
+        /**
+         * 设置接收VoIP来电事件通知Intent
+         * 呼入界面activity、开发者需修改该类
+         * */
+        Intent intent = new Intent(getContext(), VoiceView.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        ECDevice.setPendingIntent(pendingIntent);
 
         /**
          * 验证参数是否正确
@@ -136,7 +137,7 @@ public class LoginPresenter extends ControlBasePresenter<ILoginView> {
                 if (error.errorCode == SdkErrorCode.SDK_KICKED_OFF) {
                     L.e("key", "==帐号异地登陆");
                 } else {
-                    L.e("key", "==其他登录失败,错误码：" + error.errorCode);
+                    L.e("key", "==其他登录失败,错误码：" + error.toString());
                     showToast("登录失败");
                 }
                 return;

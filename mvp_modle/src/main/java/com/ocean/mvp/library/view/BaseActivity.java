@@ -15,7 +15,7 @@ import com.ocean.mvp.library.utils.PromptManager;
  */
 
 public abstract class BaseActivity extends FragmentActivity {
-    String TAG = this.getClass().getSimpleName();
+    String  TAG = this.getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

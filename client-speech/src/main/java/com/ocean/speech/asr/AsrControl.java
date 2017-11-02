@@ -85,8 +85,7 @@ public class AsrControl {
      * 构建语法
      */
     private void buildGrammar() {
-        if (mAsr == null)
-            return;
+        if (mAsr == null) return;
 
         mEngineType = SpeechConstant.TYPE_LOCAL;//设置引擎类型
 

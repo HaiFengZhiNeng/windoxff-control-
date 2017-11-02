@@ -66,27 +66,30 @@ public class SingleLogin {
                 ECDevice.getECMeetingManager().setOnMeetingListener(new OnMeetingListener() {
                     @Override
                     public void onVideoRatioChanged(VideoRatio videoRatio) {
-
+                        L.e("key", "初始化SDK成功");
                     }
 
                     @Override
                     public void onReceiveInterPhoneMeetingMsg(ECInterPhoneMeetingMsg msg) {
                         // 处理实时对讲消息Push
+                        L.e("key", "初始化SDK成功");
                     }
 
                     @Override
                     public void onReceiveVoiceMeetingMsg(ECVoiceMeetingMsg msg) {
                         // 处理语音会议消息push
+                        L.e("key", "初始化SDK成功");
                     }
 
                     @Override
                     public void onReceiveVideoMeetingMsg(ECVideoMeetingMsg msg) {
                         // 处理视频会议消息Push（暂未提供）
+                        L.e("key", "初始化SDK成功");
                     }
 
                     @Override
                     public void onMeetingPermission(String s) {
-
+                        L.e("key", "初始化SDK成功");
                     }
                 });
             }
@@ -98,18 +101,22 @@ public class SingleLogin {
                 callInterface.setOnVoIPCallListener(new ECVoIPCallManager.OnVoIPListener() {
                     @Override
                     public void onVideoRatioChanged(VideoRatio videoRatio) {
+                        L.e("key", "初始化SDK成功");
                     }
 
                     @Override
                     public void onSwitchCallMediaTypeRequest(String s, ECVoIPCallManager.CallType callType) {
+                        L.e("key", "初始化SDK成功");
                     }
 
                     @Override
                     public void onSwitchCallMediaTypeResponse(String s, ECVoIPCallManager.CallType callType) {
+                        L.e("key", "初始化SDK成功");
                     }
 
                     @Override
                     public void onDtmfReceived(String s, char c) {
+                        L.e("key", "初始化SDK成功");
                     }
 
                     @Override
