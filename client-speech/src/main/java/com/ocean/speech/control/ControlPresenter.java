@@ -181,8 +181,11 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
 //        controlBytes[3] &= (byte) 0xfe;
         controlBytes[6] = (byte) 0xBB;
 
+
         //获取UDP的ip
-        udpControl.sendUdpSocketToByIp(application, client);
+//        udpControl.sendUdpSocketToByIp(application, client);
+        //// TODO: 2017/11/18 暂时修改IP，端口号不用改 
+        UdpControl.getInstance().setUdpIp("192.168.0.239", 8891);
 
         mUDPReceiveRunnable = new Thread(new Runnable() {
             @Override
@@ -219,6 +222,9 @@ public class ControlPresenter extends ControlBasePresenter<IControlView> impleme
             }
         });
 
+        //增加
+        isCanSend = true;
+        mUDPReceiveRunnable.start();
 
         client.registerUdpServer(new UdpReceiver(new OnListenerUDPServer() {
             @Override

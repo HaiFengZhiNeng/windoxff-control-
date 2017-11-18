@@ -274,10 +274,11 @@ public class SocketManager {
      * @param mPort    接收端的端口
      * @param msg      发送的字符串
      */
-    public void sendTextByUDP(String mAddress, int mPort, String msg) {
+    public void sendTextByUDP2(String mAddress, int mPort, String msg) {
         try {
             InetAddress host = InetAddress.getByName(mAddress);
-            getExecutorService().execute(new UDPSendRunnable(mDatagramSocket, host, mPort, msg));
+            sendMessageByUdp(mDatagramSocket, host, mPort, msg.getBytes());
+//            getExecutorService().execute(new UDPSendRunnable(mDatagramSocket, host, mPort, msg));
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
@@ -290,11 +291,10 @@ public class SocketManager {
      * @param mPort    接收端的端口
      * @param msg      发送的字符串
      */
-    public void sendTextByUDP2(String mAddress, int mPort, String msg) {
+    public void sendTextByUDP(String mAddress, int mPort, String msg) {
         try {
             InetAddress host = InetAddress.getByName(mAddress);
-            sendMessageByUdp(mDatagramSocket, host, mPort, msg.getBytes());
-//            getExecutorService().execute(new UDPSendRunnable(mDatagramSocket, host, mPort, msg));
+            getExecutorService().execute(new UDPSendRunnable(mDatagramSocket, host, mPort, msg));
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }

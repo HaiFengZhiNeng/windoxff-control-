@@ -21,7 +21,7 @@ public class UdpControl {
 
     private NetClient client;
 
-    public String mUdpIP = "";
+    public String mUdpIP = "192.168.0.239";
     private int mUdpPort = 8889;
 
     private Context mContext;
@@ -41,12 +41,12 @@ public class UdpControl {
         return mUdpControl;
     }
 
-    void setUdpIp(String mUdpIP,int mUdpPort) {
+    public void setUdpIp(String mUdpIP, int mUdpPort) {
         this.mUdpIP = mUdpIP;
         this.mUdpPort = mUdpPort;
         isGetTcpIp = true;
-        PreferencesUtils.putString(mContext, "ocean_ip", mUdpIP);
-        mHandler.removeMessages(1);
+//        PreferencesUtils.putString(mContext, "ocean_ip", mUdpIP);
+//        mHandler.removeMessages(1);
 
     }
 
